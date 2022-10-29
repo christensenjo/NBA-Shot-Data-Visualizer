@@ -2,9 +2,6 @@
 
 ## Team Members
 
-Joel Christensen
-Sam Johnson
-Hagen Larsen
-Marshal Taylor
+Joel Christensen, Sam Johnson, Hagen Larsen, Marshal Taylor
 
 
