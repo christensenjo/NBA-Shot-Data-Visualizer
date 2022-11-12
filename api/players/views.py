@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import json
+import json, os
 from django.http import HttpResponse
 import pandas as pd
 from .models import Player
@@ -13,12 +13,21 @@ def get(request):
 
 
 def seed(request):
-    df = pd.read_csv('../data/nba_2022_regSeason_shotData.csv')
-    players = []
-    players = df[["namePlayer","nameTeam"]]
+    files = os.listdir('../data')
+    data = {'created': []}
+    dfs = []
+    for file in files:
+        if file.endswith('.csv'):
+            df = pd.read_csv('../data/' + file)
+            players = df[["namePlayer","nameTeam"]].drop_duplicates()
+            dfs.append(players)
+    players = pd.concat(dfs)
     players = players.drop_duplicates()
-    data = {'players': []}
     for index, row in players.iterrows():
         player = Player.objects.get_or_create(name=row['namePlayer'], team=row['nameTeam'])
-        data['players'].append({'name': player[0].name, 'team': player[0].team})
+        if player[1]:
+            data['created'].append({'name': player[0].name, 'team': player[0].team})
+
+    data['createdCount'] = len(data['created'])
+    data['totalPlayers'] = Player.objects.all().count()
     return HttpResponse(json.dumps(data))
