@@ -6,7 +6,7 @@ from .models import *
 
 
 class ShotAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('game', 'player')
 
 
 class ShotActionAdmin(admin.ModelAdmin):

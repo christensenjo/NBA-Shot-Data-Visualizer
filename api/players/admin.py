@@ -6,7 +6,7 @@ from .models import *
 
 
 class PlayerAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('team',)
 
 
 class TeamAdmin(admin.ModelAdmin):

@@ -45,6 +45,7 @@ class ZoneType(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+
 class Game(models.Model):
     date = models.DateField()
     # home_team = models.ForeignKey(Team, related_name="home_games", on_delete=models.PROTECT)
@@ -138,7 +139,8 @@ class Shot(models.Model):
                                         'home_team_slug':row['slugTeamHome'],
                                         'away_team_slug':row['slugTeamAway'],
                                         'id_csv':row['idGame']
-                })
+                                        }
+                )
 
 
                 # home_team = Team.objects.get_or_create(name=row['namePlayer'], team=row['nameTeam'])
