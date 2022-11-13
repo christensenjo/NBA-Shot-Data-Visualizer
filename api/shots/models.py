@@ -178,7 +178,7 @@ class Shot(models.Model):
             if file.endswith('.csv'):
                 if year:
                     if not str(year) in file:
-                        pass
+                        continue
                 create_shot_from_df(pd.read_csv(f'{data_path}/{file}'))
 
 
