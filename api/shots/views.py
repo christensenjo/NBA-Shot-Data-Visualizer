@@ -10,8 +10,10 @@ def index(request):
 
 
 def get(request):
+
     return HttpResponse(json.dumps({'data': 'Here is your shot data.'}))
 
 
 def seed(request):
-    Shot.load_data()
+    year = request.GET.get('year',None) or None
+    Shot.load_data(year)
