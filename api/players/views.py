@@ -8,7 +8,7 @@ from .models import Player
 
 def get(request):
     df = pd.read_csv('../data/nba_2022_regSeason_shotData.csv')
-    players = df['namePlayer'].unique()
+    players = df['namePlayer'].drop_duplicates()
     return HttpResponse(json.dumps({'players': players.tolist()}))
 
 
