@@ -6,23 +6,183 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>NBA Shots</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 	</script>
-
+    {% load static %}
 </head>
 
 <body>
 	<main>
-		<h1>Index Hello!</h1>
-		<div class="col-2-grid">
-			<div>
-				<div id="barChart"></div>
-			</div>
+		<div class="container text-center">
+            <h1>NBA Shot Data Visualization</h1>
+            <div class="row">
+                <div class="col-4 border">
+                    <h2>League Comparison</h2>
+                    <div id="shot-chart">
+                        <img src="{% static 'leagueComparison.png' %}" alt="League Comparison" style="width: 100%">
+                    </div>
+                </div>
+                <div class="col-4 border">
+                    <div id="shot-chart2">
+                        <label for="start">Start Date:</label>
+                        <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
+                        <label for="end">End Date:</label>
+                        <input class="form-control form-control-sm" type="date" placeholder="End Date" id="end_date" name="end_date" value="2022-01-01">
+                        <label for="player">Player:</label>
+                        <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
+                        <datalist id="players"></datalist>
+                        <label>Minimum</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                            <input type="number" list="age" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
+                            <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
+                        </div>
+                        <label>Maximum</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                            <input type="number" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
+                            <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
+                        </div>
+                        <button type="button" class="btn btn-success w-100 mb-2" onclick=getShots()>Visualize</button>
+                    </div>
+                </div>
+                <div class="col-4 border">
+                    <h2>Shot Chart</h2>
+                    <div id="shot-chart3">
+                        <img src="{% static 'heatmap.png' %}" alt="Heatmap" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-6 border">
+                    <h2>Shot Distance</h2>
+                    <div id="shotDistanceHistogram"></div>
+                </div>
+                <div class="col-6 border">
+                    <h2>Shot Frequency</h2>
+                    <div id="shot-chart5">
+                        <img src="{% static 'shotFrequency.png' %}" alt="Shot Frequency" style="width: 100%">
+                    </div>
+                </div>
+            </div>
 		</div>
 	</main>
 
 </body>
+<script>
+    function getShots() {
+        fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
+            .then(response => response.json())
+            .then(data => {
+                let width = 500;
+                let height = 500;
+                let svg = d3.select('#shotDistanceHistogram')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height);
 
+                var x = d3.scaleLinear()
+                    .domain([0, d3.max(data, function(d) { return d.distance })])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+                    .range([0, width]);
+
+                svg.append("g")
+                    .attr("transform", "translate(40," + (height - 20) + ")")
+                    .call(d3.axisBottom(x));
+
+                // set the parameters for the histogram
+                var histogram = d3.histogram()
+                    .value(function(d) { return d.distance; })   // I need to give the vector of value
+                    .domain(x.domain())  // then the domain of the graphic
+                    .thresholds(x.ticks(40)); // then the numbers of bins
+
+                // And apply this function to data to get the bins
+                var bins = histogram(data);
+
+                // Y axis: scale and draw:
+                var y = d3.scaleLinear()
+                    .range([height, 0])
+                    .domain([0, d3.max(bins, function(d) { return d.length; }) + 50]);   // d3.hist has to be called before the Y axis obviously
+                
+                svg.append("g")
+                    .attr("transform", "translate(40,-20)")
+                    .call(d3.axisLeft(y));
+
+                // append the bar rectangles to the svg element
+                svg.selectAll("rect")
+                    .data(bins)
+                    .enter()
+                    .append("rect")
+                        .attr("x", 1 + 40)
+                        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + (y(d.length) - 20) + ")"; })
+                        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
+                        .attr("height", function(d) { return height - y(d.length); })
+                        .style("fill", "#198754")
+                        .on("mouseover", function(d) {
+                            d3.select(this)
+                                .style("fill", "#157347");
+                        })
+                        .on("mouseleave", function(d) {
+                            d3.select(this)
+                                .style("fill", "#198754");
+                        });
+            });
+    }
+
+    let players = fetch('http://' + window.location.host + '/players/get')
+        .then(response => response.json())
+        .then(data => {
+            let players = data.players;
+            let playerList = document.getElementById('players')
+            players.forEach(player => {
+                let option = document.createElement('option')
+                option.value = player
+                playerList.appendChild(option)
+            })
+        })
+</script>
+<script>
+    // Initialize variables
+    function generateHistogram(data) {
+        let svg = d3.select("#shotDistanceHistogram");
+
+        let allData = [];
+        for (let i = 0; i < 50; i++) {
+            allData.push({"Distance": i, "Frequency": 0});
+        }
+        let width = 550;
+        let height = 480;
+
+        data.forEach(shot => {
+            allData[shot.distance].Frequency += 1;
+        });
+
+        data = allData;
+        console.log("data", data);
+
+        let x = d3.scaleLinear()
+            .domain([0, 50])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+            .range([0, width]);
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+
+        // set the parameters for the histogram
+        let histogram = d3.histogram()
+            .value(function(d) { 
+                return d.price; })   // I need to give the vector of value
+            .domain(x.domain())  // then the domain of the graphic
+            .thresholds(x.ticks(70)); // then the numbers of bins
+        
+    }
+
+
+</script>
 <script>
     class D3Chart{
     // Takes the selector that we want to build out chart on, as well as a path to read the data
