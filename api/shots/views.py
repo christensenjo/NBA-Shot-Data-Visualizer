@@ -15,6 +15,7 @@ def index(request):
 
 def get(request):
     # todo, url filter package?
+    print(request.GET)
     start_date = request.GET.get('start_date',None)
     end_date = request.GET.get('end_date',None)
     player_name = request.GET.get('player',None)
