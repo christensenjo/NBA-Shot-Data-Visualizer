@@ -188,7 +188,7 @@ https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the 
 entire idea folder.
-#.idea/
+.idea/
 
 ### macOS ###
 # General
