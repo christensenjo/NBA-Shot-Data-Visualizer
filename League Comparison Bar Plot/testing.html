@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    .gray-rect {
+      fill:mediumpurple;
+    }
+  </style>
+</head>
+<body>
+
+<!--<svg height="200" width="200">-->
+<!--  <rect class="gray-rect" width="20" height="30" x="10" y="20"></rect>-->
+<!--</svg>-->
+
+<script>
+
+  let svg = d3.select('body').append('svg').attr('width', 300).attr('height', 300)
+  svg.append('rect').attr('x', 20).attr('y', 20).attr('width', 20).attr('height', 20).attr('class', 'gray-rect');
+
+</script>
+
+</body>
+</html>

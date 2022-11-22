@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Big 5 Personality Test Bar Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="svg_helper_functions.js"></script>
+    <script src="league_bar_chart.js"></script>
+    <script src="data_processing.js"></script>
+    <script src="random_numbers.js"></script>
+</head>
+<body>
+
+<h1> League Comparison Percentile Bar Chart </h1>
+<div id="league-div"></div>
+
+<script>
+    let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200])
+    let singlePlayerStats = getRandomIntegerArray(0, 100, 5)
+    let barChart = new LeagueCompBarChart(500, 300, '#league-div')
+    barChart.updateChart(allPlayerStats, singlePlayerStats)
+
+</script>
+
+</body>
+</html>
+
