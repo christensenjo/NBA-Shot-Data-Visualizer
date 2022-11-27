@@ -1,4 +1,4 @@
-class D3Chart {
+export class D3Chart {
     // Takes the selector that we want to build out chart on, as well as a path to read the data
     // sets up additional objects to hold axis, size, and margin information so it ban be accessed anywhere in the object
     constructor(selector, dataPath) {
