@@ -1,4 +1,3 @@
-// Initialize variables
 function generateHistogram(data) {
     //TODO: combine/replace this code with the code currently in getShots() that generates the histogram
 

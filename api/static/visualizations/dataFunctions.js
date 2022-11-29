@@ -1,3 +1,7 @@
+/*
+    This function is the onClick event for the data selection widget
+ */
+
 function getShots() {
     fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
         .then(response => response.json())
