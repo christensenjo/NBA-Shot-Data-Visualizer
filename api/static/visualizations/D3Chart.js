@@ -35,11 +35,11 @@ class D3Chart{
     }
     // Should be overwritten by instances. All axis building and setting should happen within this
     buildAxis() {
-        console.log('Impliment Build Axis')
+        console.log('Implement Build Axis')
     }
     // Should be overwritten by instances. All updating information and axis should happen within this
     updateChart() {
-        console.log('Impliment Update Data')
+        console.log('Implement Update Data')
     }
     preBuild(){
         return
