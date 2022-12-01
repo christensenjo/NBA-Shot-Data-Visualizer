@@ -20,7 +20,7 @@
 
 <body>
 	<main>
-		<div class=" text-center">
+		<div class="text-center">
             <h1 id="title">NBA Shot Data Visualization</h1>
             <div class="row">
                 <div class="col-4 border">
@@ -31,13 +31,13 @@
                 </div>
                 <div class="col-4 border">
                     <div id="shot-chart2">
+                        <label for="player">Player:</label>
+                        <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
+                        <datalist id="players"></datalist>
                         <label for="start">Start Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
                         <label for="end">End Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="End Date" id="end_date" name="end_date" value="2022-01-01">
-                        <label for="player">Player:</label>
-                        <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
-                        <datalist id="players"></datalist>
                         <label>Minimum</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
@@ -53,10 +53,10 @@
                         <button type="button" class="btn btn-success w-100 mb-2" onclick=getShots()>Visualize</button>
                     </div>
                 </div>
-                <div class="col-4 border">
-                    <h2>Shot Chart</h2>
-                    <div id="shot-chart3">
-                        <img src="{% static 'heatmap.png' %}" alt="Heatmap" style="max-height:100%; max-width:100%;">
+                <div class="col-4 border" id="heatmapPane">
+                    <h2 id="heatmapTitle">Shot Chart</h2>
+                    <div id="heatmap">
+<!--                        <img src="{% static 'heatmap.png' %}" alt="Heatmap" style="max-height:100%; max-width:100%;">-->
                     </div>
                 </div>
             </div>
@@ -80,6 +80,7 @@
 <script src="{% static 'visualizations/dataFunctions.js' %}"></script>
 <script src="{% static 'visualizations/histogram.js' %}"></script>
 <script src="{% static 'visualizations/D3Chart.js' %}"></script>
+<script src="{% static 'visualizations/heatmap.js' %}"></script>
 
 <!--League Comparison Bar Chart Files-->
 <script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js' %}"></script>
@@ -88,12 +89,19 @@
 
 <script>
 
+    //TODO: create some initial filler data
+    //TODO: populate graphs with empty data prior to actual data selection
+
+    //TODO: this is not being used. the bar chart is being created via getShots(). Fix this.
     // Shot Distance Bar Chart
-	let shotDistanceBarChart = new D3Chart("#barChart","/shots/get/?player=Eddie%20Robinson&start_date=1999-01-01&end_date=2002-01-01");
-	shotDistanceBarChart.updateChart = function() {
-		console.log(this.data)
-	};
-	shotDistanceBarChart.build();
+	// let shotDistanceBarChart = new D3Chart("#barChart","/shots/get/?player=Eddie%20Robinson&start_date=1999-01-01&end_date=2002-01-01");
+	// shotDistanceBarChart.updateChart = function() {
+	// 	console.log(this.data)
+	// };
+	// shotDistanceBarChart.build();
+
+    // Heatmap Chart
+    let heatmap = new heatMap();
 
     // League Comparison Bar Chart
     let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
