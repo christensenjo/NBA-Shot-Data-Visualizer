@@ -21,11 +21,11 @@ function heatMap(){
     let axisScale = d3.scaleQuantile().range(fillRange);
 
     // SVG Implementation
-    let heatmapSVG = d3.select("#heatmap").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+    // let heatmapSVG = d3.select("#heatmap").append("svg")
+    //     .attr("width", width + margin.left + margin.right)
+    //     .attr("height", height + margin.top + margin.bottom)
+    //     .append("g")
+    //     .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
     // Implement with Data
     // console.log(data);
@@ -61,87 +61,8 @@ function heatMap(){
         // Visualize the court
 
         // NBA Court Dimension Setup (Halfcourt only)
-        let courtWidth = 56;
-        let courtHeight = 34;
-
-        let threePointLine = "M" + (width * (3/courtWidth)) + " "
-                                 + (height) + " "
-                           + "L" + (width * (3/courtWidth)) + " "
-                                 + (height * ((courtHeight-14)/courtHeight)) + " "
-                           + "A" + ((23.75/courtWidth) * width) + " "
-                                 + ((23.75/courtHeight) * height) + " "
-                                 + "0 0 1 "
-                                 + (width * (47/courtWidth)) + " "
-                                 + (height * ((courtHeight-14)/courtHeight))
-                           + "L" + (width * (47/courtWidth)) + " "
-                                 + (height)
-                            + "M0 " + height + " "
-                            + "L" + width + " " + height;
-
-        let keyOutline =  "M" + (width * (17/courtWidth)) + " "
-                            + height + " "
-                            + "L" + (width * (17/courtWidth)) + " "
-                            + (height * ((courtHeight - 18) / courtHeight)) + " "
-                            + "L" + (width * (33/courtWidth)) + " "
-                            + (height * ((courtHeight - 18) / courtHeight)) + " "
-                            + "L" + (width * (33/courtWidth)) + " "
-                            + height;
-
-        let insideKeyLines = "M" + (width * (20/courtWidth)) + " "
-                            + height + " "
-                            + "L" + (width * (20/courtWidth)) + " "
-                            + (height * ((courtHeight - 18) / courtHeight)) + " "
-                            + "M" + (width * (30/courtWidth)) + " "
-                            + height + " "
-                            + "L" + (width * (30/courtWidth)) + " "
-                            + (height * ((courtHeight - 18) / courtHeight));
-
-        let topFtCircle = "M" + (width * (20/courtWidth)) + " "
-                             + (height * ((courtHeight - 18) / courtHeight)) + " "
-                             + "A" + ((6/courtWidth) * width) + " "
-                             + ((6/courtHeight) * height) + " "
-                             + "0 0 1 "
-                             + (width * (30/courtWidth)) + " "
-                             + (height * ((courtHeight - 18) / courtHeight));
-
-        let bottomFtCircle = "M" + (width * (20/courtWidth)) + " "
-            + (height * ((courtHeight - 18) / courtHeight)) + " "
-            + "A" + ((6/courtWidth) * width) + " "
-            + ((6/courtHeight) * height) + " "
-            + "0 0 0 "
-            + (width * (30/courtWidth)) + " "
-            + (height * ((courtHeight - 18) / courtHeight));
-
-
-        heatmapSVG.append("path")
-            .attr("d", threePointLine)
-            .style("stroke","black")
-            .style("stroke-width", "2")
-            .style("fill", "#393d4f")
-            .style("opacity", "60%");
-        heatmapSVG.append("path")
-            .attr("d", keyOutline)
-            .style("stroke", "black")
-            .style("stroke-width", "2")
-            .style("fill", "#616785")
-            .style("opacity", "60%");
-        heatmapSVG.append("path")
-            .attr("d", insideKeyLines)
-            .style("stroke", "black")
-            .style("stroke-width", "2")
-            .style("fill", "none");
-        heatmapSVG.append("path")
-            .attr("d", topFtCircle)
-            .style("stroke", "black")
-            .style("stroke-width", "2")
-            .style("fill", "#616785")
-            .style("opacity", "60%");
-        heatmapSVG.append("path")
-            .attr("d", bottomFtCircle)
-            .style("stroke", "black")
-            .style("stroke-width", "2")
-            .style("fill", "none")
-            .style("stroke-dasharray", ("3, 3"));
+        let courtWidth = 50;
+        let courtHeight = 40;
 
 
         //Free Throw
