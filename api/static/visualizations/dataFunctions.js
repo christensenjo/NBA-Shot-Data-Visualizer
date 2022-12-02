@@ -1,7 +1,15 @@
+/*
+    This function is the onClick event for the data selection widget
+ */
+
 function getShots() {
     fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
         .then(response => response.json())
         .then(data => {
+
+            //TODO: move all of the below code into generateHistogram and replace it with a call to the function
+
+            //TODO: get dynamic width and height
             let width = 500;
             let height = 500;
             let svg = d3.select('#shotDistanceHistogram')

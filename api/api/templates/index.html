@@ -11,12 +11,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {% load static %}
+    <style>
+        .container-fluid{
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
 	<main>
-		<div class="container text-center">
-            <h1>NBA Shot Data Visualization</h1>
+		<div class=" text-center">
+            <h1 id="title">NBA Shot Data Visualization</h1>
             <div class="row">
                 <div class="col-4 border">
                     <h2>League Comparison</h2>
@@ -51,7 +56,7 @@
                 <div class="col-4 border">
                     <h2>Shot Chart</h2>
                     <div id="shot-chart3">
-                        <img src="{% static 'heatmap.png' %}" alt="Heatmap" style="width: 100%">
+                        <img src="{% static 'heatmap.png' %}" alt="Heatmap" style="max-height:100%; max-width:100%;">
                     </div>
                 </div>
             </div>
@@ -64,7 +69,7 @@
                 <div class="col-6 border">
                     <h2>Shot Frequency</h2>
                     <div id="shot-chart5">
-                        <img src="{% static 'shotFrequency.png' %}" alt="Shot Frequency" style="width: 100%">
+                        <img src="{% static 'shotFrequency.png' %}" alt="Shot Frequency" style="max-height:100%; max-width:100%;">
                     </div>
                 </div>
             </div>
@@ -72,29 +77,29 @@
 	</main>
 
 </body>
-<script src="visualizations/dataFunctions.js"></script>
-<script src="visualizations/histogram.js"></script>
-<script src="visualizations/D3Chart.js"></script>
+<script src="{% static 'visualizations/dataFunctions.js' %}"></script>
+<script src="{% static 'visualizations/histogram.js' %}"></script>
+<script src="{% static 'visualizations/D3Chart.js' %}"></script>
 
 <!--League Comparison Bar Chart Files-->
-<script src="visualizations/league-comparison-bar-chart/league_bar_chart.js"></script>
-<script src="visualizations/league-comparison-bar-chart/data_processing.js"></script>
-<script src="visualizations/league-comparison-bar-chart/random_numbers.js"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js' %}"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/data_processing.js' %}"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/random_numbers.js' %}"></script>
 
 <script>
 
     // Shot Distance Bar Chart
-	let shotDistanceBarChart = new D3Chart("#barChart","/shots/get/?player=Eddie%20Robinson&start_date=1999-01-01&end_date=2002-01-01")
+	let shotDistanceBarChart = new D3Chart("#barChart","/shots/get/?player=Eddie%20Robinson&start_date=1999-01-01&end_date=2002-01-01");
 	shotDistanceBarChart.updateChart = function() {
 		console.log(this.data)
-	}
-	shotDistanceBarChart.build()
+	};
+	shotDistanceBarChart.build();
 
     // League Comparison Bar Chart
-    let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200])
-    let singlePlayerStats = getRandomIntegerArray(0, 100, 5)
-    let leagueCompBarChart = new LeagueCompBarChart(500, 300, '#league-comp-bar-chart')
-    leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats)
+    let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
+    let singlePlayerStats = getRandomIntegerArray(0, 100, 5);
+    let leagueCompBarChart = new LeagueCompBarChart(500, 300, '#league-comp-bar-chart');
+    leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats);
 
 </script>
 </html>
