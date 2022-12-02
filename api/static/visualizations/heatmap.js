@@ -3,7 +3,6 @@ function heatMap(){
     let margin = {"top": 20, "bottom": 0, "left": 60, "right": 20};
 
     let width = document.getElementById("heatmapPane").offsetWidth - margin.left - margin.right;
-    width = width - (.24 * width); // Account for padding on heatmap court svg
     let height = document.getElementById("heatmapPane").offsetHeight - margin.top - margin.bottom - document.getElementById("heatmapTitle").offsetHeight;
     let dataset = [];
 
@@ -22,7 +21,7 @@ function heatMap(){
     let axisScale = d3.scaleQuantile().range(fillRange);
 
     // SVG Implementation
-    let heatmapSVG = d3.select("#court");
+    let heatmapSVG = d3.select("#court").append("g");
 
     // Implement with Data
     // console.log(data);
@@ -64,15 +63,17 @@ function heatMap(){
         // Make heatmap grid
         for(let i = 0; i < 10; i++){
             for(let j = 0; j < 10; j++){
-                console.log("height is " + height);
-                console.log("rect h is " + (.10 * height));
+                width = 700;
+                height = 559;
 
                 heatmapSVG.append("rect")
                     .attr("width", .10 * width)
                     .attr("height", .10 * height)
                     .style("fill", "red")
                     .attr("x", ((i/10) * width))
-                    .attr("y", ((j/10) * height));
+                    .attr("y", ((j/10) * height))
+                    .style("opacity", "50%")
+                    .attr("id", "heatRect");
             }
         }
     }
