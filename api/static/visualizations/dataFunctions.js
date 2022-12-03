@@ -7,8 +7,13 @@ function getShots() {
         .then(response => response.json())
         .then(data => {
 
-            //TODO: move all of the below code into generateHistogram and replace it with a call to the function
+            //Pane 1 - League Comparison
 
+            //Pane 2 - Heatmap
+            heatMap(data)
+
+            //Pane 3 - Shot Distance Histogram
+            //TODO: move all of the below code into generateHistogram and replace it with a call to the function
             //TODO: get dynamic width and height
             let width = 500;
             let height = 500;
@@ -61,6 +66,10 @@ function getShots() {
                     d3.select(this)
                         .style("fill", "#198754");
                 });
+
+            //Pane 4 - Clutch Shots Line Chart
+
+
         });
 }
 

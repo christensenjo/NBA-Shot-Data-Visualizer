@@ -177,8 +177,13 @@
 	// };
 	// shotDistanceBarChart.build();
 
+
+
+    // Call getShots() for an initial setup without player data, then call again onClick
+    getShots()
+
     // Heatmap Chart
-    let heatmap = new heatMap();
+    //let heatmap = new heatMap();
 
     // League Comparison Bar Chart
     let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
