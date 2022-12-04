@@ -39,7 +39,7 @@ function getShots() {
             // And apply this function to data to get the bins
             var bins = histogram(data);
 
-            // Y axis: scale and draw:
+            // Y-axis: scale and draw:
             var y = d3.scaleLinear()
                 .range([height, 0])
                 .domain([0, d3.max(bins, function(d) { return d.length; }) + 50]);   // d3.hist has to be called before the Y axis obviously

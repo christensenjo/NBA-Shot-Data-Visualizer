@@ -16,9 +16,6 @@ function heatMap(data){
         fillRange.push(legendWidth/colors.length * i);
     }
     let fill = d3.scaleQuantile().range(colors);
-    console.log(fill(100));
-    console.log(fill(0));
-    console.log(fill(0.5));
     let axisScale = d3.scaleQuantile().range(fillRange);
 
     // SVG Implementation
@@ -54,8 +51,6 @@ function heatMap(data){
 
     function init(data){
         //Data Transformation and Handling
-        // console.log("WIDTH is " + width);
-        // console.log("HEIGHT is " + height);
         let shotGrid = [];
         for(let i = 0; i < 10; i++){
             shotGrid[i] = new Array(10);
@@ -63,20 +58,8 @@ function heatMap(data){
             for(let j = 0; j < 10; j++){
                 shotGrid[i][j] = {"x": i, "y": j};
 
-                //Create initial grid rects
-                // heatmapSVG.append("rect")
-                // .attr("width", .10 * width)
-                // .attr("height", .10 * height)
-                // .style("fill", "none")
-                // .attr("x", ((i/10) * width))
-                // .attr("y", ((j/10) * height))
-                // .style("opacity", "0%")
-                // .attr("class", "heatRect");
-
             }
         }
-        // console.log("empty shotGrid init:")
-        // console.log(shotGrid);
 
         data.forEach(function(d){
             let x = d['location_x'];
@@ -87,10 +70,6 @@ function heatMap(data){
 
             let made = d['is_made'];
             let currentAttempts;
-            // console.log(xGrid);
-            // console.log("y is " + (y/ 10));
-            // console.log(yGrid);
-            // console.log(shotGrid);
             if('attempts' in shotGrid[xGrid][yGrid]){
                 currentAttempts = shotGrid[xGrid][yGrid]['attempts'];
             }else{
@@ -121,11 +100,8 @@ function heatMap(data){
 
         });
 
-        console.log("min and max should be here");
-        console.log(max);
-        console.log(min);
-        updateHeatMap(shotGrid);
 
+        updateHeatMap(shotGrid);
     }
 
     function getXGrid(x){
@@ -186,16 +162,13 @@ function heatMap(data){
     function updateHeatMap(shotGrid){
         // Create the legend
         createLegend(max, min);
-        console.log(min);
-        console.log(max);
         fill.domain([min, max]);
 
         width = 700;
         height = 559;
-        gridSquares = [].concat(...shotGrid);
-        // console.log("HERE");
-        // console.log(gridSquares);
+        let gridSquares = [].concat(...shotGrid);
 
+        // TODO: fix this join so that it behaves properly on update and exit
         heatmapSVG.selectAll(".heatRects")
             .data(gridSquares)
             .join(
@@ -207,7 +180,6 @@ function heatMap(data){
                             if(d['fg%'] === undefined){
                                 return "none";
                             }
-                            console.log(d['fg%']);
                             return fill(d['fg%']);
                         })
                         .style("opacity", "50%")
@@ -218,6 +190,14 @@ function heatMap(data){
                         .attr("x", function(d){
                             return d['x']/10 * width;
                         });
+
+                        // TODO: design hover tooltip showing fg% in this zone
+                        // .on("mouseenter", function(e, d) {
+                        //     d3.select(this.parentNode).append("text").text(d['fg%']);
+                        // })
+                        // .on("mouseleave", function(e, d){
+                        //     d3.select(this.parentNode).remove("text");
+                        // });
                 },
                 function (update){
                     return update
