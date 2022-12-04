@@ -32,7 +32,7 @@
                 <div class="col-4 border">
                 <form id="shot-chart2">
                         <label for="player">Player:</label>
-                        <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
+                        <input class="form-control form-control-lg" id="player" type="text" name="player" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
                         <datalist id="players"></datalist>
                         
                         <label for="start">Start Date:</label>
@@ -156,7 +156,7 @@
 </body>
 <script src="{% static 'visualizations/dataFunctions.js' %}"></script>
 <script src="{% static 'visualizations/histogram.js' %}"></script>
-<script src="{% static 'visualizations/D3Chart.js' %}"></script>
+<script src="{% static 'visualizations/D3Chart.js' %}" type="module"></script>
 <script src="{% static 'visualizations/heatmap.js' %}"></script>
 <script src="{% static 'visualizations/ShotFrequency.js'%}" type="module"></script>
 
@@ -211,7 +211,7 @@
 
 	function visualize(url) {
 		shotFrequency.dataPath = `/shots/get/frequency/?${url}`
-		
+		console.log(shotFrequency.dataPath )
 		shotFrequency.update()
 	}
 

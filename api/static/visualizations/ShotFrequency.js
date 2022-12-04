@@ -70,6 +70,8 @@ export class ShotFrequency extends D3Chart {
                 return yScale(d['count'])
             })
 
+        console.log(this.data)
+
         this.svg.selectAll(".line").data(this.data)
             .join("path")
             .transition().duration(1000)
