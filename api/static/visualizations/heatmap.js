@@ -10,12 +10,15 @@ function heatMap(data){
     let fillRange = [];
     let legendWidth = width / 5;
     let legendHeight = 30;
-    let max;
-    let min;
+    let max = 0;
+    let min = 100000000;
     for(let i = 0; i <= colors.length; i++){
         fillRange.push(legendWidth/colors.length * i);
     }
     let fill = d3.scaleQuantile().range(colors);
+    console.log(fill(100));
+    console.log(fill(0));
+    console.log(fill(0.5));
     let axisScale = d3.scaleQuantile().range(fillRange);
 
     // SVG Implementation
@@ -72,10 +75,9 @@ function heatMap(data){
 
             }
         }
-        console.log("empty shotGrid init:")
-        console.log(shotGrid);
+        // console.log("empty shotGrid init:")
+        // console.log(shotGrid);
 
-        let count = 0;
         data.forEach(function(d){
             let x = d['location_x'];
             let xGrid = getXGrid(x);
@@ -117,14 +119,11 @@ function heatMap(data){
                 shotGrid[xGrid][yGrid]['fg%'] = newFG;
             }
 
-            //printing for debug purposes
-            count++;
-            if(count < 10){
-               console.log(d);
-               console.log(x, y, made);
-           }
         });
 
+        console.log("min and max should be here");
+        console.log(max);
+        console.log(min);
         updateHeatMap(shotGrid);
 
     }
@@ -187,6 +186,8 @@ function heatMap(data){
     function updateHeatMap(shotGrid){
         // Create the legend
         createLegend(max, min);
+        console.log(min);
+        console.log(max);
         fill.domain([min, max]);
 
         width = 700;
@@ -203,6 +204,10 @@ function heatMap(data){
                         .attr("width", .10 * width)
                         .attr("height", .10 * height)
                         .style("fill", function(d, i){
+                            if(d['fg%'] === undefined){
+                                return "none";
+                            }
+                            console.log(d['fg%']);
                             return fill(d['fg%']);
                         })
                         .style("opacity", "50%")
@@ -213,12 +218,14 @@ function heatMap(data){
                         .attr("x", function(d){
                             return d['x']/10 * width;
                         });
-
                 },
                 function (update){
                     return update
                         .style("opacity", "50%")
                         .style("fill", function(d){
+                            if(d['fg%'] === undefined){
+                                return "none";
+                            }
                             return fill(d['fg%']);
                         })
                 },
