@@ -2,6 +2,15 @@ function getShots() {
     fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
         .then(response => response.json())
         .then(data => {
+            //Pane 1 - League Comparison
+
+            //Pane 2 - Heatmap
+            heatMap(data)
+
+            //Pane 3 - Shot Distance Histogram
+            //TODO: move all of the below code into generateHistogram and replace it with a call to the function
+            //TODO: get dynamic width and height
+            
             let width = 500;
             let height = 500;
             let svg = d3.select('#shotDistanceHistogram')
@@ -26,7 +35,7 @@ function getShots() {
             // And apply this function to data to get the bins
             var bins = histogram(data);
 
-            // Y axis: scale and draw:
+            // Y-axis: scale and draw:
             var y = d3.scaleLinear()
                 .range([height, 0])
                 .domain([0, d3.max(bins, function(d) { return d.length; }) + 50]);   // d3.hist has to be called before the Y axis obviously
@@ -53,6 +62,10 @@ function getShots() {
                     d3.select(this)
                         .style("fill", "#198754");
                 });
+
+            //Pane 4 - Clutch Shots Line Chart
+
+
         });
 }
 
