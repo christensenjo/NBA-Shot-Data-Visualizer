@@ -38,15 +38,17 @@ function heatMap(data){
             .enter().append("g")
             .attr("transform", "translate(" + (width / 2 - legendWidth / 2) + ", " + height + ")");
 
-        legend.append("rect")
-            .attr("width", legendWidth/colors.length)
-            .attr("height", legendHeight)
-            .style("fill", d=>d)
-            .attr("x", (d,i)=> legendWidth/colors.length * i);
+        // legend.append("rect")
+        //     .attr("width", legendWidth/colors.length)
+        //     .attr("height", legendHeight)
+        //     .style("fill", d=>d)
+        //     .attr("x", (d,i)=> legendWidth/colors.length * i);
 
-        heatmapSVG.append("g").attr("class", "axis")
-            .attr("transform", "translate(" + (width / 2 - legendWidth/2) + ", " + (height - legendHeight + 60) + ")")
-            .call(legendAxis);
+        //TODO: uncomment creation and move legend to good location
+
+        // heatmapSVG.append("g").attr("class", "axis")
+        //     .attr("transform", "translate(" + (width / 2 - legendWidth/2) + ", " + (height - legendHeight + 60) + ")")
+        //     .call(legendAxis);
     }
 
     function init(data){
@@ -57,7 +59,6 @@ function heatMap(data){
 
             for(let j = 0; j < 10; j++){
                 shotGrid[i][j] = {"x": i, "y": j};
-
             }
         }
 
@@ -161,59 +162,30 @@ function heatMap(data){
 
     function updateHeatMap(shotGrid){
         // Create the legend
-        createLegend(max, min);
+        // TODO: fix legend location
+        //createLegend(max, min);
         fill.domain([min, max]);
-
-        width = 700;
-        height = 559;
         let gridSquares = [].concat(...shotGrid);
 
-        // TODO: fix this join so that it behaves properly on update and exit
-        heatmapSVG.selectAll(".heatRects")
+        heatmapSVG.selectAll(".heatRect")
             .data(gridSquares)
-            .join(
-                function (enter){
-                    return enter.append("rect")
-                        .attr("width", .10 * width)
-                        .attr("height", .10 * height)
-                        .style("fill", function(d, i){
-                            if(d['fg%'] === undefined){
-                                return "none";
-                            }
-                            return fill(d['fg%']);
-                        })
-                        .style("opacity", "50%")
-                        .attr("class", "heatRect")
-                        .attr("y", function(d){
-                            return d['y']/10 * height;
-                        })
-                        .attr("x", function(d){
-                            return d['x']/10 * width;
-                        });
-
-                        // TODO: design hover tooltip showing fg% in this zone
-                        // .on("mouseenter", function(e, d) {
-                        //     d3.select(this.parentNode).append("text").text(d['fg%']);
-                        // })
-                        // .on("mouseleave", function(e, d){
-                        //     d3.select(this.parentNode).remove("text");
-                        // });
-                },
-                function (update){
-                    return update
-                        .style("opacity", "50%")
-                        .style("fill", function(d){
-                            if(d['fg%'] === undefined){
-                                return "none";
-                            }
-                            return fill(d['fg%']);
-                        })
-                },
-                function (exit){
-                    exit.remove();
+            .join("rect")
+            .attr("class", "heatRect")
+            .attr("width", .10 * width)
+            .attr("height", .10 * height)
+            .style("fill", function(d, i){
+                if(d['fg%'] === undefined){
+                    return "none";
                 }
-            );
-
+                return fill(d['fg%']);
+            })
+            .style("opacity", "50%")
+            .attr("y", function(d){
+                return d['y']/10 * height;
+            })
+            .attr("x", function(d){
+                return d['x']/10 * width;
+            });
     }
 
 
