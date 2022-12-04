@@ -1,4 +1,4 @@
-class D3Chart{
+export class D3Chart {
     // Takes the selector that we want to build out chart on, as well as a path to read the data
     // sets up additional objects to hold axis, size, and margin information so it ban be accessed anywhere in the object
     constructor(selector, dataPath) {
@@ -11,12 +11,14 @@ class D3Chart{
         this.svg = null
     }
     // resizes the object
-    reSize(width, height){
+    
+    reSize(width, height) {
         this.size.width = width
         this.size.height = height
     }
     // resets the margin object
-    reMargin(top, right, bottom, left){
+
+    reMargin(top, right, bottom, left) {
         this.margin.top = top
         this.margin.right = right
         this.margin.bottom = bottom
@@ -35,21 +37,19 @@ class D3Chart{
     }
     // Should be overwritten by instances. All axis building and setting should happen within this
     buildAxis() {
-        console.log('Implement Build Axis')
+        console.log('Impliment Build Axis')
     }
     // Should be overwritten by instances. All updating information and axis should happen within this
     updateChart() {
-        console.log('Implement Update Data')
-    }
-    preBuild(){
-        return
-    }
-    filterData(){
-        return
+        console.log('Impliment Update Data')
     }
     // async method to get data
     async fetchData() {
-        this.data = await d3.json(this.dataPath, function(data){
+        if (!this.dataPath) {
+            this.data = []
+            return
+        }
+        this.data = await d3.json(this.dataPath, function(data) {
             return data
         })
     }
@@ -58,16 +58,17 @@ class D3Chart{
     async build() {
         this.buildSVG()
 
-        this.preBuild()
         await this.fetchData()
-        this.filterData()
+
 
         this.buildAxis()
-        this.updateChart()
+        this.updateAxis()
+
     }
     // Should be called everytime you want to fetch and update data
     async update() {
         await this.fetchData()
+        this.updateAxis()
         this.updateChart()
     }
 }
