@@ -30,10 +30,11 @@
                     </div>
                 </div>
                 <div class="col-4 border">
-                    <div id="shot-chart2">
+                <form id="shot-chart2">
                         <label for="player">Player:</label>
                         <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
                         <datalist id="players"></datalist>
+                        
                         <label for="start">Start Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
                         <label for="end">End Date:</label>
@@ -50,8 +51,8 @@
                             <input type="number" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
                             <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
                         </div>
-                        <button type="button" class="btn btn-success w-100 mb-2" onclick=getShots()>Visualize</button>
-                    </div>
+                        <button type="submit" class="btn btn-success w-100 mb-2" onclick=getShots()>Visualize</button>
+                    </form>
                 </div>
                 <div class="col-4 border" id="heatmapPane">
                     <h2 id="heatmapTitle">Shot Chart</h2>
@@ -145,8 +146,7 @@
                 </div>
                 <div class="col-6 border">
                     <h2>Shot Frequency</h2>
-                    <div id="shot-chart5">
-                        <img src="{% static 'shotFrequency.png' %}" alt="Shot Frequency" style="max-height:100%; max-width:100%;">
+                    <div id="shotFrequency">
                     </div>
                 </div>
             </div>
@@ -158,14 +158,17 @@
 <script src="{% static 'visualizations/histogram.js' %}"></script>
 <script src="{% static 'visualizations/D3Chart.js' %}"></script>
 <script src="{% static 'visualizations/heatmap.js' %}"></script>
+<script src="{% static 'visualizations/ShotFrequency.js'%}" type="module"></script>
 
 <!--League Comparison Bar Chart Files-->
-<script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js' %}"></script>
-<script src="{% static 'visualizations/league-comparison-bar-chart/data_processing.js' %}"></script>
-<script src="{% static 'visualizations/league-comparison-bar-chart/random_numbers.js' %}"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js'%}"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/data_processing.js'%}"></script>
+<script src="{% static 'visualizations/league-comparison-bar-chart/random_numbers.js'%}"></script>
 
-<script>
-
+<script type="module">
+	
+	import {ShotFrequency} from "{% static 'visualizations/ShotFrequency.js'%}";
+  
     //TODO: create some initial filler data?
     //TODO: populate graphs with empty data prior to actual data selection
 
@@ -191,5 +194,33 @@
     let leagueCompBarChart = new LeagueCompBarChart(500, 300, '#league-comp-bar-chart');
     leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats);
 
+
+    document.addEventListener('submit', (e) => {
+		// Store reference to form to make later code easier to read
+		const form = e.target;
+		e.preventDefault();
+		let url = new URLSearchParams(new FormData(form)).toString()
+		visualize(url)
+
+	});
+
+	let shotFrequency = new ShotFrequency("#shotFrequency", "")
+	shotFrequency.reSize(400, 400)
+	shotFrequency.reMargin(15, 25, 60, 60)
+	shotFrequency.build()
+
+	function visualize(url) {
+		shotFrequency.dataPath = `/shots/get/frequency/?${url}`
+		
+		shotFrequency.update()
+	}
+
 </script>
+<style>
+	.line {
+		fill: none;
+		stroke: rgb(0, 116, 217);
+		stroke-width: 1;
+	}
+</style>
 </html>
