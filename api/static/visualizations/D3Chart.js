@@ -11,11 +11,13 @@ export class D3Chart {
         this.svg = null
     }
     // resizes the object
+    
     reSize(width, height) {
         this.size.width = width
         this.size.height = height
     }
     // resets the margin object
+
     reMargin(top, right, bottom, left) {
         this.margin.top = top
         this.margin.right = right
