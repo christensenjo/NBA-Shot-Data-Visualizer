@@ -51,7 +51,7 @@
                             <input type="number" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
                             <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
                         </div>
-                        <button type="submit" class="btn btn-success w-100 mb-2" onclick=getShots()>Visualize</button>
+                        <button type="submit" class="btn btn-success w-100 mb-2">Visualize</button>
                     </form>
                 </div>
                 <div class="col-4 border" id="heatmapPane">
@@ -157,7 +157,8 @@
 <script src="{% static 'visualizations/dataFunctions.js' %}"></script>
 <script src="{% static 'visualizations/histogram.js' %}"></script>
 <script src="{% static 'visualizations/D3Chart.js' %}" type="module"></script>
-<script src="{% static 'visualizations/heatmap.js' %}"></script>
+<script src="{% static 'visualizations/HeatMap.js' %}"></script>
+<script src="{% static 'visualizations/ShotFrequency.js'%}" type="module"></script>
 
 <!--League Comparison Bar Chart Files-->
 <script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js'%}"></script>
@@ -169,32 +170,13 @@
 	import {ShotFrequency} from "{% static 'visualizations/ShotFrequency.js'%}";
 	import {ShotDistance} from "{% static 'visualizations/ShotDistance.js'%}";
 
-    //TODO: create some initial filler data?
-    //TODO: populate graphs with empty data prior to actual data selection
-
-    //TODO: this is not being used. the bar chart is being created via getShots(). Fix this.
-    // Shot Distance Bar Chart
-	// let shotDistanceBarChart = new D3Chart("#barChart","/shots/get/?player=Eddie%20Robinson&start_date=1999-01-01&end_date=2002-01-01");
-	// shotDistanceBarChart.updateChart = function() {
-	// 	console.log(this.data)
-	// };
-	// shotDistanceBarChart.build();
-
-
-
-    // Call getShots() for an initial setup without player data, then call again onClick
-    getShots()
-
-    // Heatmap Chart
-    //let heatmap = new heatMap();
-
     // League Comparison Bar Chart
     let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
     let singlePlayerStats = getRandomIntegerArray(0, 100, 5);
     let leagueCompBarChart = new LeagueCompBarChart(500, 300, '#league-comp-bar-chart');
     leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats);
 
-
+    // Event Listener for Post Submission of ShotFrequency and ShotDistance, get fetch for HeatMap
     document.addEventListener('submit', (e) => {
 		// Store reference to form to make later code easier to read
 		const form = e.target;
@@ -204,7 +186,9 @@
 
 	});
 
-	let shotFrequency = new ShotFrequency("#shotFrequency", "")
+    let heatmap = new HeatMap("#court", "");
+
+    let shotFrequency = new ShotFrequency("#shotFrequency", "")
 	shotFrequency.reSize(400, 400)
 	shotFrequency.reMargin(15, 25, 60, 120)
 	shotFrequency.build()
@@ -215,11 +199,13 @@
 	shotDistance.build()
 
 	function visualize(url) {
-		shotFrequency.dataPath = `/shots/get/frequency/?${url}`
-		shotFrequency.update()
+        heatmap.update();
 
-        shotDistance.dataPath = `/shots/get/?${url}`
-		shotDistance.update()
+		shotFrequency.dataPath = `/shots/get/frequency/?${url}`;
+		shotFrequency.update();
+
+        shotDistance.dataPath = `/shots/get/?${url}`;
+		shotDistance.update();
 	}
 
 </script>
