@@ -30,8 +30,11 @@ class HeatMap {
 
     updateChart(){
         this.fill.domain([this.min, this.max]);
+        console.log(this.fill);
+        console.log(this.fill(5));
         this.gridSquares = [].concat(...this.shotGrid);
 
+        let self = this;
         this.svg.selectAll(".heatRects")
             .data(this.gridSquares)
             .join(
@@ -44,7 +47,7 @@ class HeatMap {
                         if(d['fg%'] === undefined){
                             return "none";
                         }
-                        return this.fill(d['fg%']);
+                        return self.fill(d['fg%']);
                     })
                     .style("opacity", "50%")
                     .attr("class", "heatRect")
@@ -61,7 +64,7 @@ class HeatMap {
                         if(d['fg%'] === undefined){
                             return "none";
                         }
-                        return this.fill(d['fg%']);
+                        return self.fill(d['fg%']);
                     }),
                 exit => exit.remove()
             );
