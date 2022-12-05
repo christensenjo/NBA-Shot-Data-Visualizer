@@ -10,8 +10,8 @@ class HeatMap {
         this.svg = d3.select(selector).append("g");
 
         // Legend Setup Members
-        this.colors = ["#80000F", "#BF0071", "#FF05FF", "#BC44FF",
-            "#A488FF"];
+        this.colors = ["#ff5420", "#ff0000", "#ff00f1", "#a700ff",
+            "#3e00ff"];
         this.fillRange = [];
         this.legendWidth = this.width / 5;
         this.legendHeight = 30;
@@ -45,7 +45,7 @@ class HeatMap {
                         console.log("entering fill");
 
                         if(d['fg%'] === undefined){
-                            return "none";
+                            return "#3e00ff";
                         }
                         return self.fill(d['fg%']);
                     })
@@ -195,7 +195,12 @@ class HeatMap {
         }
     }
 
+    clearOld(){
+        this.svg.selectAll("rect").remove();
+    }
+
     async update(){
+        this.clearOld();
         await this.fetchData();
         this.updateLegend();
         this.updateChart();
