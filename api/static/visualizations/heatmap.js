@@ -39,6 +39,8 @@ class HeatMap {
                     .attr("width", .10 * this.width)
                     .attr("height", .10 * this.height)
                     .style("fill", function(d, i){
+                        console.log("entering fill");
+
                         if(d['fg%'] === undefined){
                             return "none";
                         }
@@ -47,14 +49,15 @@ class HeatMap {
                     .style("opacity", "50%")
                     .attr("class", "heatRect")
                     .attr("y", function(d){
-                        return d['y']/10 * height;
+                        return (d['y']/10) * 559;
                     })
                     .attr("x", function(d){
-                        return d['x']/10 * width;
+                        return (d['x']/10) * 700;
                     }),
                 update => update
                     .style("opacity", "50%")
                     .style("fill", function(d){
+                        console.log("Updating fill");
                         if(d['fg%'] === undefined){
                             return "none";
                         }
@@ -65,12 +68,17 @@ class HeatMap {
     }
 
     async fetchData(){
-        fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
+        await fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
             .then(response => response.json())
             .then(data => {
+                    // console.log(data);
                     this.data = data;
+                    // console.log(this.data);
                 }
             );
+
+        console.log("data fetched:");
+        console.log(this.data);
 
         // TODO: implement post data fetch to replace above get fetch
         // if(!this.dataPath){
