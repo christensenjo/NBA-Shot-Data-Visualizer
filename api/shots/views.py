@@ -1,5 +1,5 @@
 from django.core import serializers
-from django.db.models import F, Max
+from django.db.models import F, Max, Q
 from django.shortcuts import render
 import json
 from django.http import HttpResponse, JsonResponse
@@ -56,7 +56,9 @@ def get_frequency(request):
     #            ((minutes_in_period - F('minutes_remaining')) * 60)) \
     #     .values('seconds').order_by('seconds') \
     #     .annotate(count=Count('id'))
-    data = shots.values('period').order_by('period').annotate(count=Count('id'))
+    data = shots.values('period').order_by('period').annotate(count=Count('id'),
+                                                              made_count=Count('id', filter=Q(is_made=True)),
+                                                              missed_count=Count('id', filter=Q(is_made=False)))
         # .annotate(bucket=(F('total_seconds_left') / bucket_size * bucket_size)) \
     return JsonResponse(list(data), safe=False)
 
