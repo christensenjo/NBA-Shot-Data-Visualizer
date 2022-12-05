@@ -32,9 +32,9 @@
                 <div class="col-4 border">
                 <form id="shot-chart2">
                         <label for="player">Player:</label>
-                        <input class="form-control form-control-lg" id="player" type="text" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
+                        <input class="form-control form-control-lg" id="player" type="text" name="player" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
                         <datalist id="players"></datalist>
-                        
+
                         <label for="start">Start Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
                         <label for="end">End Date:</label>
@@ -145,7 +145,7 @@
                     <div id="shotDistanceHistogram"></div>
                 </div>
                 <div class="col-6 border">
-                    <h2>Shot Frequency</h2>
+                    <h2>Attempted Shots By Quarter</h2>
                     <div id="shotFrequency">
                     </div>
                 </div>
@@ -156,7 +156,7 @@
 </body>
 <script src="{% static 'visualizations/dataFunctions.js' %}"></script>
 <script src="{% static 'visualizations/histogram.js' %}"></script>
-<script src="{% static 'visualizations/D3Chart.js' %}"></script>
+<script src="{% static 'visualizations/D3Chart.js' %}" type="module"></script>
 <script src="{% static 'visualizations/HeatMap.js' %}"></script>
 <script src="{% static 'visualizations/ShotFrequency.js'%}" type="module"></script>
 
@@ -166,9 +166,10 @@
 <script src="{% static 'visualizations/league-comparison-bar-chart/random_numbers.js'%}"></script>
 
 <script type="module">
-	
+
 	import {ShotFrequency} from "{% static 'visualizations/ShotFrequency.js'%}";
-  
+	import {ShotDistance} from "{% static 'visualizations/ShotDistance.js'%}";
+
     //TODO: create some initial filler data?
     //TODO: populate graphs with empty data prior to actual data selection
 
@@ -204,13 +205,20 @@
 
 	let shotFrequency = new ShotFrequency("#shotFrequency", "")
 	shotFrequency.reSize(400, 400)
-	shotFrequency.reMargin(15, 25, 60, 60)
+	shotFrequency.reMargin(15, 25, 60, 120)
 	shotFrequency.build()
 
+    let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
+	shotDistance.reSize(400, 400)
+	shotDistance.reMargin(15, 25, 60, 60)
+	shotDistance.build()
+
 	function visualize(url) {
-		shotFrequency.dataPath = `/shots/get/frequency/?${url}`
-		
-		shotFrequency.update()
+		shotFrequency.dataPath = `/shots/get/frequency/?${url}`;
+		shotFrequency.update();
+
+        shotDistance.dataPath = `/shots/get/?${url}`;
+		shotDistance.update();
 
         heatmap.update();
 	}
@@ -222,5 +230,25 @@
 		stroke: rgb(0, 116, 217);
 		stroke-width: 1;
 	}
+	.made, .dots {
+        fill: #b2edb2;
+        stroke: #b2edb2;
+		stroke-width: 1;
+	}
+	.total {
+	    fill: #ffa5a5;
+        stroke: #ffa5a5;
+		stroke-width: 1;
+	}
+	.line-tooltip {
+	    background-color:#d9d9d9;
+	    padding: 5px;
+	    border-radius: 5px;
+	    display:none;
+	}
+    .dots {
+        fill: #d9d9d9;
+    }
+
 </style>
 </html>
