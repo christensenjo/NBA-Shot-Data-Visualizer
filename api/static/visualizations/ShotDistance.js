@@ -31,7 +31,6 @@ export class ShotDistance extends D3Chart {
 
     updateAxis = function() {
 
-        console.log(this.data)
         let data = this.data
 
         this.axis.xScale.domain([0, d3.max(data, function(d) { return d.distance })])
@@ -56,19 +55,18 @@ export class ShotDistance extends D3Chart {
         let xScale = this.axis.xScale
         let yScale = this.axis.yScale
 
-        let height = this.height
+        let height = this.size.height
 
         this.axis.xAxis.transition().duration(1000).call(this.axis.x)
         this.axis.yAxis.transition().duration(1000).call(this.axis.y)
 
         let data = this.bins
 
-        console.log(data)
 
         this.svg.selectAll("rect").data(data)
             .join("rect")
-            .attr("x", 1 + 40)
-            .attr("transform", function(d) { return "translate(" + xScale(d.x0) + "," + (yScale(d.length) - 20) + ")"; })
+            .attr("x", 1)
+            .attr("transform", function(d) { return "translate(" + xScale(d.x0) + "," + (yScale(d.length)) + ")"; })
             .attr("width", function(d) { return xScale(d.x1) - xScale(d.x0) -1 ; })
             .attr("height", function(d) { return height - yScale(d.length); })
             .style("fill", "#198754")
