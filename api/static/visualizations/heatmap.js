@@ -1,4 +1,4 @@
-export class HeatMap {
+class HeatMap {
     constructor(selector, dataPath){
         this.selector = selector;
         this.dataPath = dataPath;
