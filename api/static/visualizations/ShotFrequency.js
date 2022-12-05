@@ -46,7 +46,7 @@ export class ShotFrequency extends D3Chart {
             .attr("transform", "rotate(-90)")
             .text("Count of Shots");
 
-        let data = [{"title":"Made", "color":"#b2edb2"},{"title":"Missed", "color":"#ffa5a5"}]
+        let data = [{"title":"Made", "color":"#5bd75b"},{"title":"Missed", "color":"#9d9d9d"}]
         var size = 20
         this.svg.selectAll("mydots")
             .data(data)
@@ -139,7 +139,6 @@ export class ShotFrequency extends D3Chart {
             })
             .on("mouseover", function(e){
                 tooltip.style("display", "initial")
-                console.log(e.target.getAttribute('data-message'))
                 tooltip.html(e.target.getAttribute('data-message'))
             })
             .on("mousemove", function(event){return tooltip.style("top", (event.pageY-25)+"px").style("left",(event.pageX+5)+"px");})
@@ -154,8 +153,6 @@ export class ShotFrequency extends D3Chart {
                 return yScale(d.count)
             })
             .attr("r", 6)
-
-
 
     }
 }
