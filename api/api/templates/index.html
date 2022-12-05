@@ -34,7 +34,7 @@
                         <label for="player">Player:</label>
                         <input class="form-control form-control-lg" id="player" type="text" name="player" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
                         <datalist id="players"></datalist>
-                        
+
                         <label for="start">Start Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
                         <label for="end">End Date:</label>
@@ -158,7 +158,6 @@
 <script src="{% static 'visualizations/histogram.js' %}"></script>
 <script src="{% static 'visualizations/D3Chart.js' %}" type="module"></script>
 <script src="{% static 'visualizations/heatmap.js' %}"></script>
-<script src="{% static 'visualizations/ShotFrequency.js'%}" type="module"></script>
 
 <!--League Comparison Bar Chart Files-->
 <script src="{% static 'visualizations/league-comparison-bar-chart/league_bar_chart.js'%}"></script>
@@ -166,9 +165,10 @@
 <script src="{% static 'visualizations/league-comparison-bar-chart/random_numbers.js'%}"></script>
 
 <script type="module">
-	
+
 	import {ShotFrequency} from "{% static 'visualizations/ShotFrequency.js'%}";
-  
+	import {ShotDistance} from "{% static 'visualizations/ShotDistance.js'%}";
+
     //TODO: create some initial filler data?
     //TODO: populate graphs with empty data prior to actual data selection
 
@@ -209,10 +209,17 @@
 	shotFrequency.reMargin(15, 25, 60, 60)
 	shotFrequency.build()
 
+    let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
+	shotDistance.reSize(400, 400)
+	shotDistance.reMargin(15, 25, 60, 60)
+	shotDistance.build()
+
 	function visualize(url) {
 		shotFrequency.dataPath = `/shots/get/frequency/?${url}`
-		console.log(shotFrequency.dataPath )
 		shotFrequency.update()
+
+        shotDistance.dataPath = `/shots/get/?${url}`
+		shotDistance.update()
 	}
 
 </script>

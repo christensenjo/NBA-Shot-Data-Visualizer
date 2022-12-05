@@ -9,11 +9,11 @@ export class ShotFrequency extends D3Chart {
 
         this.axis.xScale = d3.scaleLinear()
             .domain(this.xDomain)
-            .range([0, this.size.height])
+            .range([0, this.size.width])
         //
         this.axis.yScale = d3.scaleLinear()
             .domain(this.yDomain)
-            .range([0, this.size.width])
+            .range([0, this.size.height])
 
         this.axis.x = d3.axisBottom(this.axis.xScale)
         this.axis.y = d3.axisLeft(this.axis.yScale)
@@ -70,7 +70,6 @@ export class ShotFrequency extends D3Chart {
                 return yScale(d['count'])
             })
 
-        console.log(this.data)
 
         this.svg.selectAll(".line").data(this.data)
             .join("path")
