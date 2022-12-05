@@ -145,7 +145,7 @@
                     <div id="shotDistanceHistogram"></div>
                 </div>
                 <div class="col-6 border">
-                    <h2>Shot Frequency</h2>
+                    <h2>Attempted Shots By Quarter</h2>
                     <div id="shotFrequency">
                     </div>
                 </div>
@@ -206,7 +206,7 @@
 
 	let shotFrequency = new ShotFrequency("#shotFrequency", "")
 	shotFrequency.reSize(400, 400)
-	shotFrequency.reMargin(15, 25, 60, 60)
+	shotFrequency.reMargin(15, 25, 60, 120)
 	shotFrequency.build()
 
     let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
@@ -229,7 +229,7 @@
 		stroke: rgb(0, 116, 217);
 		stroke-width: 1;
 	}
-	.made {
+	.made, .dots {
         fill: #b2edb2;
         stroke: #b2edb2;
 		stroke-width: 1;
@@ -239,5 +239,15 @@
         stroke: #ffa5a5;
 		stroke-width: 1;
 	}
+	.line-tooltip {
+	    background-color:#d9d9d9;
+	    padding: 5px;
+	    border-radius: 5px;
+	    display:none;
+	}
+    .dots {
+        fill: #d9d9d9;
+    }
+
 </style>
 </html>

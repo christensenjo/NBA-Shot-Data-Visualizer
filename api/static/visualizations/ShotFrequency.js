@@ -45,11 +45,40 @@ export class ShotFrequency extends D3Chart {
             .attr("y", -32)
             .attr("transform", "rotate(-90)")
             .text("Count of Shots");
+
+        let data = [{"title":"Made", "color":"#b2edb2"},{"title":"Missed", "color":"#ffa5a5"}]
+        var size = 20
+        this.svg.selectAll("mydots")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", -100)
+            .attr("y", function(d,i){ return (height - 50) + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("width", size)
+            .attr("height", size)
+            .style("fill", function(d){ return d["color"]})
+
+        // Add one dot in the legend for each name.
+        this.svg.selectAll("mylabels")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("x", -100 + size*1.2)
+            .attr("y", function(d,i){ return (height - 50) + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+            .style("fill", function(d){ return d["color"]})
+            .text(function(d){ return d["title"]})
+            .attr("text-anchor", "left")
+            .style("alignment-baseline", "middle")
+
+
+        this.tooltip = d3.select(this.selector).append("div")
+            .style("position", "absolute")
+//            .style("visibility", "hidden")
+            .text("I'm a circle!")
+            .attr("class", "line-tooltip")
     }
 
     updateAxis = function() {
-
-        console.log(this.data)
 
         this.xDomain = []
         this.data.forEach(element => this.xDomain.push(parseInt(element['period'])))
@@ -65,7 +94,6 @@ export class ShotFrequency extends D3Chart {
     // The bulk of the logic. It actually takes the data in
     // It should set all things into the axis object
     updateChart = function() {
-        console.log(this.data)
         let xScale = this.axis.xScale
         let yScale = this.axis.yScale
 
@@ -88,16 +116,46 @@ export class ShotFrequency extends D3Chart {
                 return yScale(d['made_count'])
             })
 
-        this.svg.selectAll(".total").data(this.data)
+        let data = this.data
+        this.svg.selectAll(".total").data([{}])
             .join("path")
             .transition().duration(1000)
             .attr("d", `${line(this.data)},${this.size.height},${this.size.height-1},1,${this.size.height-1}`)
             .attr("class", "line total")
+            .attr("pointer-events", "auto")
 
-        this.svg.selectAll(".made").data(this.data)
+        let tooltip = this.tooltip
+        this.svg.selectAll(".made").data([{}])
             .join("path")
             .transition().duration(1000)
             .attr("d", `${made_line(this.data)},${this.size.height},${this.size.height-1},1,${this.size.height-1}`)
             .attr("class", "line made")
+            .attr("pointer-events", "auto")
+
+        this.svg.selectAll(".dots").data(this.data)
+            .join("circle")
+            .attr('data-message', function(d){
+                return `Period: ${d.period} <br> Shots: ${d.count}<br> Made: ${d.made_count}<br> Missed: ${d.missed_count}<br>`
+            })
+            .on("mouseover", function(e){
+                tooltip.style("display", "initial")
+                console.log(e.target.getAttribute('data-message'))
+                tooltip.html(e.target.getAttribute('data-message'))
+            })
+            .on("mousemove", function(event){return tooltip.style("top", (event.pageY-25)+"px").style("left",(event.pageX+5)+"px");})
+            .on("mouseout", function(){return tooltip.style("display", "none");})
+            .transition().duration(1000)
+            .attr("class", "dots")
+            .attr("pointer-events", "auto")
+            .attr("cx", function(d) {
+                return xScale(d.period)
+            })
+            .attr("cy", function(d) {
+                return yScale(d.count)
+            })
+            .attr("r", 6)
+
+
+
     }
 }
