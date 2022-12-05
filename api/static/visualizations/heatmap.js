@@ -77,7 +77,7 @@ class HeatMap {
                 }
             );
 
-        console.log("data fetched:");
+        console.log("heatmap data fetched:");
         console.log(this.data);
 
         // TODO: implement post data fetch to replace above get fetch
@@ -100,10 +100,10 @@ class HeatMap {
 
         this.data.forEach(function(d){
             let x = d['location_x'];
-            let xGrid = getXGrid(x);
+            let xGrid = this.getXGrid(x);
 
             let y = d['location_y'];
-            let yGrid = getYGrid(y);
+            let yGrid = this.getYGrid(y);
 
             let made = d['is_made'];
             let currentAttempts;
@@ -134,7 +134,7 @@ class HeatMap {
                 this.shotGrid[xGrid][yGrid]['made']  = currentMade;
                 this.shotGrid[xGrid][yGrid]['fg%'] = newFG;
             }
-        });
+        }, this);
     }
 
     getXGrid(x){
