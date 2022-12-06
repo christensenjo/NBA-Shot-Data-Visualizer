@@ -141,11 +141,11 @@
             <div class="row">
 
                 <div class="col-6 border">
-                    <h2>Shot Distance</h2>
+                    <h2>Shots by Distance</h2>
                     <div id="shotDistanceHistogram"></div>
                 </div>
                 <div class="col-6 border">
-                    <h2>Attempted Shots By Quarter</h2>
+                    <h2>Attempted Shots By Period</h2>
                     <div id="shotFrequency">
                     </div>
                 </div>
@@ -181,7 +181,6 @@
 	// shotDistanceBarChart.build();
 
 
-
     // Call getShots() for an initial setup without player data, then call again onClick
     getShots()
 
@@ -211,7 +210,7 @@
 
     let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
 	shotDistance.reSize(400, 400)
-	shotDistance.reMargin(15, 25, 60, 60)
+	shotDistance.reMargin(15, 25, 60, 120)
 	shotDistance.build()
 
 	function visualize(url) {
