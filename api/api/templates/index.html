@@ -39,20 +39,63 @@
                         <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
                         <label for="end">End Date:</label>
                         <input class="form-control form-control-sm" type="date" placeholder="End Date" id="end_date" name="end_date" value="2022-01-01">
+                        <button type="submit" class="btn btn-success w-100 my-2">Visualize</button>
                         <label>Minimum</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
-                            <input type="number" list="age" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
-                            <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
+                            <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">PPG</div>
+                                  </div>
+                                  <input id="min-ppg" value="0" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                                </div>
+                              </div>
+                              <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">APG</div>
+                                  </div>
+                                  <input id="min-apg" value="0" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
+                                </div>
+                              </div>
+                              <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">RPG</div>
+                                  </div>
+                                  <input id="min-rpg" value="0" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
+                                </div>
+                              </div>
                         </div>
                         <label>Maximum</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
-                            <input type="number" class="form-control form-control-sm" placeholder="Age" aria-label="Age">
-                            <input type="number" class="form-control fomrm-control-sm" placeholder="Salary" aria-label="Salary">
+                            <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">PPG</div>
+                                  </div>
+                                  <input id="max-ppg" value="100" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                                </div>
+                              </div>
+                              <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">APG</div>
+                                  </div>
+                                  <input id="max-apg" value="100" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
+                                </div>
+                              </div>
+                              <div class="col-sm-4 my-1">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">RPG</div>
+                                  </div>
+                                  <input id="max-rpg" value="100" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
+                                </div>
+                              </div>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 mb-2">Visualize</button>
                     </form>
+                    <button id="btn-filter" class="btn btn-secondary w-100 mb-2">Filter</button>
                 </div>
                 <div class="col-4 border" id="heatmapPane">
                     <ul class="list-inline" id="titleAndLegend" style="text-align: left; padding-left: 5%;">
@@ -195,6 +238,47 @@
 		visualize(url)
 
 	});
+
+    function updatePlayers(minPpg, maxPpg, minApg, maxApg, minRpg, maxRpg, ) {
+        let players = fetch('http://' + window.location.host + '/players/get')
+            .then(response => response.json())
+            .then(data => {
+                let playerList = document.getElementById('players')
+                playerList.innerHTML = '';
+                data.forEach(player => {
+                    player = player.fields;
+                    if (player.ppg >= minPpg && player.ppg <= maxPpg && player.rpg >= minRpg && player.rpg <= maxRpg && player.apg >= minApg && player.apg <= maxApg) {
+                        let created = false;
+                        for (let i = 0; i < playerList.options.length; i++) {
+                            if (playerList.options[i].value === player.name) {
+                                created = true;
+                                break;
+                            }
+                        }
+                        if (!created) {
+                            let option = document.createElement('option');
+                            option.value = player.name;
+                            playerList.appendChild(option);
+                        }
+                    }
+                })
+            }); 
+        }
+
+    updatePlayers(0, 100, 0, 100, 0, 100)
+
+    // Event Listener for Post Submission of ShotFrequency and ShotDistance, get fetch for HeatMap
+    document.getElementById("btn-filter").addEventListener('click', function(e) {
+        console.log(document.getElementById('min-ppg').value);
+        let minPpg = document.getElementById("min-ppg").value;
+        let maxPpg = document.getElementById("max-ppg").value;
+        let minAst = document.getElementById("min-apg").value;
+        let maxAst = document.getElementById("max-apg").value;
+        let minReb = document.getElementById("min-rpg").value;
+        let maxReb = document.getElementById("max-rpg").value;
+
+        updatePlayers(minPpg, maxPpg, minAst, maxAst, minReb, maxReb);
+    })
 
     let heatmap = new HeatMap("#court", "");
 

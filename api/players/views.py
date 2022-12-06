@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core import serializers
 import json, os
 from django.http import HttpResponse
 import pandas as pd
@@ -7,9 +8,9 @@ from .models import Player, Team
 # Create your views here.
 
 def get(request):
-    df = pd.read_csv('../data/nba_2022_regSeason_shotData.csv')
-    players = df['namePlayer'].drop_duplicates()
-    return HttpResponse(json.dumps({'players': players.tolist()}))
+    players = Player.objects.all()
+    data = serializers.serialize('json', players)
+    return HttpResponse(data, content_type='application/json')
 
 def getPlayerData(request, player):
     player = Player.objects.filter(name=player)
