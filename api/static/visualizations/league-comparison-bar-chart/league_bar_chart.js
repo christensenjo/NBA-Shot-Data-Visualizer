@@ -23,16 +23,19 @@ modifyHtmlIdForm = (id) => {
 }
 
 class LeagueCompBarChart {
-    constructor(width, height, divElementName, yLabels=['Points', 'Rebounds', 'Salary', 'Height', 'Weight']) {
+
+    constructor(width, height, divElementName) {
         // The data fed in should contain the percentiles (not sure how many).
-        this.initialize(width, height, divElementName, yLabels)
+        this.initialize(width, height, divElementName)
     }
 
-    initialize = (width, height, divElementName, yLabels) => {
+    initialize = (width, height, divElementName) => {
         this.width = width
         this.height = height
         this.divElementName = divElementName
-        this.yLabels = yLabels;
+
+        // this.yLabels = ['PPG', 'RPG', 'APG', 'TOPG', 'Salary']
+        this.yLabels = ['Points', 'Rebounds', 'Assists', 'Turnovers', 'Salary']
         this.barSpacing = 15
 
         this.percentileTextId = 'percentile-text'
@@ -49,21 +52,6 @@ class LeagueCompBarChart {
         this.createInitialPercentileTextElement()
         this.createInitialActualValueTextElement()
         this.updateTextOnMouseMovement()
-        this.makeDataRequest()
-    }
-
-    makeDataRequest = async () => {
-        // /players/getPlayerData/playerName
-        // let endpoint = 'http://' + window.location.host + '/players/getPlayerData/?playerName=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value
-        let endpoint = 'http://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
-        console.log('endpoint', endpoint)
-        await fetch(endpoint)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                this.data = data;
-                // console.log(this.data);
-            })
     }
 
     createInitialPercentileTextElement = () => {
@@ -121,6 +109,17 @@ class LeagueCompBarChart {
             d3.select(modifyHtmlIdForm(this.actualValueTextId)).text(actualValueText)
             }
         )
+    }
+
+    // This function effectively calls the update function with received data.
+    makeApiRequest = async () => {
+        let endpoint = 'http://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
+        console.log('endpoint', endpoint)
+        await fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                this.updateChart(data['leagueData'], data['playerData'])
+            })
     }
 
     updateChart = (twoDArray, oneDArray) => {

@@ -224,10 +224,10 @@
 	import {ShotDistance} from "{% static 'visualizations/ShotDistance.js'%}";
 
     // League Comparison Bar Chart
-    let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
-    let singlePlayerStats = getRandomIntegerArray(0, 100, 5);
+    // let allPlayerStats = getRandomIntegerMatrix(0, 100, [5, 200]);
+    // let singlePlayerStats = getRandomIntegerArray(0, 100, 5);
     let leagueCompBarChart = new LeagueCompBarChart(500, 300, '#league-comp-bar-chart');
-    leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats);
+    // leagueCompBarChart.updateChart(allPlayerStats, singlePlayerStats);
 
     // Event Listener for Post Submission of ShotFrequency and ShotDistance, get fetch for HeatMap
     document.addEventListener('submit', (e) => {
@@ -239,7 +239,7 @@
 
 	});
 
-    function updatePlayers(minPpg, maxPpg, minApg, maxApg, minRpg, maxRpg, ) {
+    function updatePlayers(minPpg, maxPpg, minApg, maxApg, minRpg, maxRpg) {
         let players = fetch('http://' + window.location.host + '/players/get')
             .then(response => response.json())
             .then(data => {
@@ -300,6 +300,8 @@
 
         shotDistance.dataPath = `/shots/get/?${url}`;
 		shotDistance.update();
+
+        leagueCompBarChart.makeApiRequest()
 	}
 
 </script>
