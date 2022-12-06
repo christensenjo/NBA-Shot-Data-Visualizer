@@ -10,10 +10,10 @@ class HeatMap {
         this.svg = d3.select(selector).append("g");
 
         // Legend Setup Members
-        this.colors = ["#80000F", "#BF0071", "#FF05FF", "#BC44FF",
-            "#A488FF"];
+        this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff",
+            "#3e00ff"];
         this.fillRange = [];
-        this.legendWidth = this.width / 5;
+        this.legendWidth = (this.width / 5) * 1.5;
         this.legendHeight = 30;
         this.max = 0;
         this.min = 100000000;
@@ -24,8 +24,54 @@ class HeatMap {
         this.axisScale = d3.scaleQuantile().range(this.fillRange);
     }
 
+    removeOldLegend(){
+        d3.select("#legendSVG").remove();
+    }
+
     updateLegend(){
-        console.log("Implement Legend");
+
+        this.removeOldLegend();
+        this.fill.domain([this.min, this.max]);
+
+        console.log("pane width is " + document.getElementById("heatmapPane").offsetWidth);
+        console.log("title width is " + document.getElementById("heatmapTitle").offsetWidth);
+
+        let legendSVG = d3.select("#legendItem").append("svg")
+            .attr("id", "legendSVG")
+            .attr("height", document.getElementById("heatmapTitle").offsetHeight + 20)
+            .attr("width", (document.getElementById("heatmapPane").offsetWidth - document.getElementById("heatmapTitle").offsetWidth) * .6)
+            .style("margin-top", "5%")
+            .append("g");
+
+        let diff = (this.max - this.min)/this.colors.length;
+        let LegendScale = [];
+        for(let i = 0;i <= this.colors.length;i++){
+            LegendScale.push(diff * (i) + this.min);
+        }
+
+        this.colors = ["#3e00ff", "#a700ff", "#ff00f1", "#ff5420",
+            "#ff0000"];
+        this.axisScale.domain(LegendScale);
+        let legendAxis = d3.axisBottom(this.axisScale).tickFormat(x=>  (x * 100).toFixed(1) + "%");
+        let legend = legendSVG.selectAll(".legend")
+            .data(this.colors)
+            .enter().append("g")
+            .attr("transform", "translate(" + 21 + ", " + 0 + ")");
+
+        console.log("legendWidth is " + this.legendWidth);
+        console.log("color legnth: " + this.colors.length);
+
+        legend.append("rect")
+            .attr("width", this.legendWidth/this.colors.length)
+            .attr("height", this.legendHeight)
+            .style("fill", d=>d)
+            .attr("x", (d,i)=> this.legendWidth/this.colors.length * i);
+
+        legendSVG.append("g").attr("class", "axis")
+            .attr("transform", "translate(" + (20) + ", " + (30) + ")")
+            .call(legendAxis);
+        this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff",
+            "#3e00ff"];
     }
 
     updateChart(){
@@ -45,7 +91,7 @@ class HeatMap {
                         console.log("entering fill");
 
                         if(d['fg%'] === undefined){
-                            return "none";
+                            return "#3e00ff";
                         }
                         return self.fill(d['fg%']);
                     })
@@ -195,7 +241,12 @@ class HeatMap {
         }
     }
 
+    clearOld(){
+        this.svg.selectAll("rect").remove();
+    }
+
     async update(){
+        this.clearOld();
         await this.fetchData();
         this.updateLegend();
         this.updateChart();
