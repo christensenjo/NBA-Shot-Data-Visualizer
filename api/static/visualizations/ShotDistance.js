@@ -53,7 +53,7 @@ export class ShotDistance extends D3Chart {
             .attr("x", -height/2)
             .attr("y", -32)
             .attr("transform", "rotate(-90)")
-            .text("3 Point");
+            .text("3 Point Line");
 
 
         this.tooltip = d3.select(this.selector).append("div")

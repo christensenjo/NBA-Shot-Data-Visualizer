@@ -56,7 +56,7 @@ class LeagueCompBarChart {
         // /players/getPlayerData/playerName
         // let endpoint = 'http://' + window.location.host + '/players/getPlayerData/?playerName=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value
         let endpoint = 'http://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
-        console.log(endpoint)
+        console.log('endpoint', endpoint)
         await fetch(endpoint)
             .then(response => response.json())
             .then(data => {
