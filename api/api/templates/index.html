@@ -141,11 +141,11 @@
             <div class="row">
 
                 <div class="col-6 border">
-                    <h2>Shot Distance</h2>
+                    <h2>Shots by Distance</h2>
                     <div id="shotDistanceHistogram"></div>
                 </div>
                 <div class="col-6 border">
-                    <h2>Attempted Shots By Quarter</h2>
+                    <h2>Attempted Shots By Period</h2>
                     <div id="shotFrequency">
                     </div>
                 </div>
@@ -195,7 +195,7 @@
 
     let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
 	shotDistance.reSize(400, 400)
-	shotDistance.reMargin(15, 25, 60, 60)
+	shotDistance.reMargin(15, 25, 60, 120)
 	shotDistance.build()
 
 	function visualize(url) {
@@ -215,14 +215,14 @@
 		stroke: rgb(0, 116, 217);
 		stroke-width: 1;
 	}
-	.made, .dots {
-        fill: #b2edb2;
-        stroke: #b2edb2;
+	.made {
+        fill: #198754;
+        stroke: #198754;
 		stroke-width: 1;
 	}
 	.total {
-	    fill: #ffa5a5;
-        stroke: #ffa5a5;
+	    fill: #9d9d9d;
+        stroke: #9d9d9d;
 		stroke-width: 1;
 	}
 	.line-tooltip {
@@ -232,7 +232,9 @@
 	    display:none;
 	}
     .dots {
-        fill: #d9d9d9;
+    }
+    .bar {
+        fill: #198754;
     }
 
 </style>
