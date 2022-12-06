@@ -137,7 +137,8 @@ class LeagueCompBarChart {
     }
 
     deleteGreenBars = () => {
-        d3.selectAll('.green').remove()
+        console.log('deleting green bars')
+        d3.selectAll('.green-bar').remove()
     }
 
     getYAxisSpacing = () => {
