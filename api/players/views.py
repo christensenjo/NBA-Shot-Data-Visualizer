@@ -12,12 +12,12 @@ def get(request):
     return HttpResponse(json.dumps({'players': players.tolist()}))
 
 
-def seed(request):
+def seedPlayers(request):
     files = os.listdir('../data')
     data = {'created': []}
     dfs = []
     for file in files:
-        if file.endswith('.csv'):
+        if file.endswith('shotData.csv'):
             df = pd.read_csv('../data/' + file)
             players = df[["namePlayer","nameTeam","idPlayer"]].drop_duplicates()
             dfs.append(players)
