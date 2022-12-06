@@ -20,10 +20,14 @@ def getPlayerData(request, player):
     else:
         playerData = [0, 0, 0, 0, 0]
     
-    leagueData = []
+    leagueData = [[], [], [], [], []]
     players = Player.objects.filter(ppg__isnull=False, rpg__isnull=False, apg__isnull=False, topg__isnull=False, salary__isnull=False)
     for p in players:
-        leagueData.append([p.ppg, p.rpg, p.apg, p.topg, p.salary])
+        leagueData[0].append(p.ppg)
+        leagueData[1].append(p.rpg)
+        leagueData[2].append(p.apg)
+        leagueData[3].append(p.topg)
+        leagueData[4].append(p.salary)
 
     return HttpResponse(json.dumps({'playerData': playerData, 'leagueData': leagueData}))
         
