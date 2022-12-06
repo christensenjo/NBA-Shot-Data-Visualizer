@@ -8,6 +8,11 @@ class Player(models.Model):
     team_name = models.CharField(max_length=100)
     id_csv = models.IntegerField()
     team = models.ForeignKey('Team', related_name='players', on_delete=models.PROTECT, blank=True, null=True)
+    salary = models.IntegerField(blank=True, null=True)
+    ppg = models.FloatField(blank=True, null=True)
+    rpg = models.FloatField(blank=True, null=True)
+    apg = models.FloatField(blank=True, null=True)
+    topg = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.name}, {self.team}'

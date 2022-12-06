@@ -27,7 +27,6 @@ To stop the server, use `Ctrl+C` in the terminal where the server is running.
 
 Before using the visualization interface, the user will need to seed player data and shot data for the years they are interested in. To do so:
 1. Navigate to [/players/seed](http://127.0.0.1:8000/players/seed)
-   1. As of 11/29/22 player seeding may result in an error, but should still work for the majority of players.
-   2. Wait a moment or until it errors out, then proceed.
 2. Navigate to /shots/seed/?year=<YEAR>, replacing <YEAR> with the year you wish to seed shot data for.
-3. After seeding the necessary player and shot data, return to [http://localhost:8000/](http://127.0.0.1:8000/) and use the interface.
+3. Navigate to [/players/seedData](http://127.0.0.1:8000/players/seed) to seed ppg, rpg, apg, etc. data for players.
+4. After seeding the necessary player and shot data, return to [http://localhost:8000/](http://127.0.0.1:8000/) and use the interface.
