@@ -1,110 +1,146 @@
-function heatMap(data){
-    // SVG Setup Details
-    let margin = {"top": 20, "bottom": 0, "left": 60, "right": 20};
-    let width = 700;
-    let height = 559;
+class HeatMap {
+    constructor(selector, dataPath){
+        this.selector = selector;
+        this.dataPath = dataPath;
+        this.data = [];
+        this.shotGrid = [];
+        this.gridSquares = [];
+        this.height = 559;
+        this.width = 700;
+        this.svg = d3.select(selector).append("g");
 
-    // Color Scaling Details
-    let colors = ["#80000F", "#BF0071", "#FF05FF", "#BC44FF",
-        "#A488FF"];
-    let fillRange = [];
-    let legendWidth = width / 5;
-    let legendHeight = 30;
-    let max = 0;
-    let min = 100000000;
-    for(let i = 0; i <= colors.length; i++){
-        fillRange.push(legendWidth/colors.length * i);
-    }
-    let fill = d3.scaleQuantile().range(colors);
-    let axisScale = d3.scaleQuantile().range(fillRange);
-
-    // SVG Implementation
-    let heatmapSVG = d3.select("#court")
-        .append("g");
-
-    function createLegend(max, min){
-        let diff = (max - min)/colors.length;
-        let LegendScale = [];
-        for(let i = 0;i <= colors.length;i++){
-            LegendScale.push(diff * (i + 1) + min);
+        // Legend Setup Members
+        this.colors = ["#80000F", "#BF0071", "#FF05FF", "#BC44FF",
+            "#A488FF"];
+        this.fillRange = [];
+        this.legendWidth = this.width / 5;
+        this.legendHeight = 30;
+        this.max = 0;
+        this.min = 100000000;
+        for(let i = 0; i <= this.colors.length; i++){
+            this.fillRange.push(this.legendWidth/this.colors.length * i);
         }
-
-        axisScale.domain(LegendScale);
-
-        let legendAxis = d3.axisBottom(axisScale).tickFormat(x=>  x.toFixed(1) + "%");
-
-        let legend = heatmapSVG.selectAll(".legend")
-            .data(colors)
-            .enter().append("g")
-            .attr("transform", "translate(" + (width / 2 - legendWidth / 2) + ", " + height + ")");
-
-        legend.append("rect")
-            .attr("width", legendWidth/colors.length)
-            .attr("height", legendHeight)
-            .style("fill", d=>d)
-            .attr("x", (d,i)=> legendWidth/colors.length * i);
-
-        heatmapSVG.append("g").attr("class", "axis")
-            .attr("transform", "translate(" + (width / 2 - legendWidth/2) + ", " + (height - legendHeight + 60) + ")")
-            .call(legendAxis);
+        this.fill = d3.scaleQuantile().range(this.colors);
+        this.axisScale = d3.scaleQuantile().range(this.fillRange);
     }
 
-    function init(data){
+    updateLegend(){
+        console.log("Implement Legend");
+    }
+
+    updateChart(){
+        this.fill.domain([this.min, this.max]);
+        console.log(this.fill);
+        console.log(this.fill(5));
+        this.gridSquares = [].concat(...this.shotGrid);
+
+        let self = this;
+        this.svg.selectAll(".heatRects")
+            .data(this.gridSquares)
+            .join(
+                enter => enter.append("rect")
+                    .attr("width", .10 * this.width)
+                    .attr("height", .10 * this.height)
+                    .style("fill", function(d, i){
+                        console.log("entering fill");
+
+                        if(d['fg%'] === undefined){
+                            return "none";
+                        }
+                        return self.fill(d['fg%']);
+                    })
+                    .style("opacity", "50%")
+                    .attr("class", "heatRect")
+                    .attr("y", function(d){
+                        return (d['y']/10) * 559;
+                    })
+                    .attr("x", function(d){
+                        return (d['x']/10) * 700;
+                    }),
+                update => update
+                    .style("opacity", "50%")
+                    .style("fill", function(d){
+                        console.log("Updating fill");
+                        if(d['fg%'] === undefined){
+                            return "none";
+                        }
+                        return self.fill(d['fg%']);
+                    }),
+                exit => exit.remove()
+            );
+    }
+
+    async fetchData(){
+        await fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
+            .then(response => response.json())
+            .then(data => {
+                    // console.log(data);
+                    this.data = data;
+                    // console.log(this.data);
+                }
+            );
+
+        console.log("heatmap data fetched:");
+        console.log(this.data);
+
+        // TODO: implement post data fetch to replace above get fetch
+        // if(!this.dataPath){
+        //     this.data = [];
+        //     return;
+        // }
+        // this.data = await d3.json(this.dataPath, function(data){
+        //     return data;
+        // });
+
         //Data Transformation and Handling
-        let shotGrid = [];
         for(let i = 0; i < 10; i++){
-            shotGrid[i] = new Array(10);
+            this.shotGrid[i] = new Array(10);
 
             for(let j = 0; j < 10; j++){
-                shotGrid[i][j] = {"x": i, "y": j};
-
+                this.shotGrid[i][j] = {"x": i, "y": j};
             }
         }
 
-        data.forEach(function(d){
+        this.data.forEach(function(d){
             let x = d['location_x'];
-            let xGrid = getXGrid(x);
+            let xGrid = this.getXGrid(x);
 
             let y = d['location_y'];
-            let yGrid = getYGrid(y);
+            let yGrid = this.getYGrid(y);
 
             let made = d['is_made'];
             let currentAttempts;
-            if('attempts' in shotGrid[xGrid][yGrid]){
-                currentAttempts = shotGrid[xGrid][yGrid]['attempts'];
+            if('attempts' in this.shotGrid[xGrid][yGrid]){
+                currentAttempts = this.shotGrid[xGrid][yGrid]['attempts'];
             }else{
                 currentAttempts = 0;
             }
             let currentMade;
-            if('made' in shotGrid[xGrid][yGrid]){
-                currentMade = shotGrid[xGrid][yGrid]['made'];
+            if('made' in this.shotGrid[xGrid][yGrid]){
+                currentMade = this.shotGrid[xGrid][yGrid]['made'];
             }else{
                 currentMade = 0;
             }
             let newFG = ((currentMade + 1)/(currentAttempts + 1));
-            if(newFG > max){
-                max = newFG;
+            if(newFG > this.max){
+                this.max = newFG;
             }
-            if(newFG < min){
-                min = newFG;
+            if(newFG < this.min){
+                this.min = newFG;
             }
             if(made){
-                shotGrid[xGrid][yGrid]['attempts'] = currentAttempts + 1;
-                shotGrid[xGrid][yGrid]['made']  = currentMade + 1;
-                shotGrid[xGrid][yGrid]['fg%'] = newFG;
+                this.shotGrid[xGrid][yGrid]['attempts'] = currentAttempts + 1;
+                this.shotGrid[xGrid][yGrid]['made']  = currentMade + 1;
+                this.shotGrid[xGrid][yGrid]['fg%'] = newFG;
             }else{
-                shotGrid[xGrid][yGrid]['attempts'] = currentAttempts + 1;
-                shotGrid[xGrid][yGrid]['made']  = currentMade;
-                shotGrid[xGrid][yGrid]['fg%'] = newFG;
+                this.shotGrid[xGrid][yGrid]['attempts'] = currentAttempts + 1;
+                this.shotGrid[xGrid][yGrid]['made']  = currentMade;
+                this.shotGrid[xGrid][yGrid]['fg%'] = newFG;
             }
-
-        });
-
-
-        updateHeatMap(shotGrid);
+        }, this);
     }
 
-    function getXGrid(x){
+    getXGrid(x){
         x = x / 250;
 
         if(x <= -0.8){
@@ -132,7 +168,7 @@ function heatMap(data){
         }
     }
 
-    function getYGrid(y){
+    getYGrid(y){
         y = y / 10;
         // grid positions from left-top corner
         // start from higher distances
@@ -159,63 +195,10 @@ function heatMap(data){
         }
     }
 
-    function updateHeatMap(shotGrid){
-        // Create the legend
-        createLegend(max, min);
-        fill.domain([min, max]);
-
-        width = 700;
-        height = 559;
-        let gridSquares = [].concat(...shotGrid);
-
-        // TODO: fix this join so that it behaves properly on update and exit
-        heatmapSVG.selectAll(".heatRects")
-            .data(gridSquares)
-            .join(
-                function (enter){
-                    return enter.append("rect")
-                        .attr("width", .10 * width)
-                        .attr("height", .10 * height)
-                        .style("fill", function(d, i){
-                            if(d['fg%'] === undefined){
-                                return "none";
-                            }
-                            return fill(d['fg%']);
-                        })
-                        .style("opacity", "50%")
-                        .attr("class", "heatRect")
-                        .attr("y", function(d){
-                            return d['y']/10 * height;
-                        })
-                        .attr("x", function(d){
-                            return d['x']/10 * width;
-                        });
-
-                        // TODO: design hover tooltip showing fg% in this zone
-                        // .on("mouseenter", function(e, d) {
-                        //     d3.select(this.parentNode).append("text").text(d['fg%']);
-                        // })
-                        // .on("mouseleave", function(e, d){
-                        //     d3.select(this.parentNode).remove("text");
-                        // });
-                },
-                function (update){
-                    return update
-                        .style("opacity", "50%")
-                        .style("fill", function(d){
-                            if(d['fg%'] === undefined){
-                                return "none";
-                            }
-                            return fill(d['fg%']);
-                        })
-                },
-                function (exit){
-                    exit.remove();
-                }
-            );
-
+    async update(){
+        await this.fetchData();
+        this.updateLegend();
+        this.updateChart();
     }
 
-
-    init(data);
 }

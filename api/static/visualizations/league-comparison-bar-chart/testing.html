@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="data_processing.js"></script>
+    <script src="random_numbers.js"></script>
+
+</head>
+<body>
+
+<script>
+
+    let array = getRandomIntegerArray(0, 100, 1000)
+    console.log(array)
+    let percentile = getPercentile(array, 0.20)
+    console.log(percentile)
+
+</script>
+
+</body>
+</html>
