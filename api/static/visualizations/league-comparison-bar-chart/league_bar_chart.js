@@ -210,7 +210,8 @@ class LeagueCompBarChart {
     }
 
     createSVGInstance = (divElement) => {
-        this.svg = d3.select(divElement).append("svg").attr("width", this.width).attr("height", this.height);
+        this.divElement = divElement;
+        this.svg = d3.select(`${divElement} svg`);
     }
 
     createXScale = () => {
