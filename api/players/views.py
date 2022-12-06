@@ -20,7 +20,7 @@ def getPlayerData(request, player):
         playerData = [0, 0, 0, 0, 0]
     
     leagueData = []
-    players = Player.objects.all()
+    players = Player.objects.filter(ppg__isnull=False, rpg__isnull=False, apg__isnull=False, topg__isnull=False, salary__isnull=False)
     for p in players:
         leagueData.append([p.ppg, p.rpg, p.apg, p.topg, p.salary])
 
@@ -39,15 +39,17 @@ def seedPlayers(request):
     players = pd.concat(dfs)
     players = players.drop_duplicates()
     for index, row in players.iterrows():
-        team = Team.objects.get(name=row['nameTeam'])
+        print(row)
+        team = Team.objects.filter(name=row['nameTeam'])
         if team:
+            team = team[0]
             player = Player.objects.get_or_create(name=row['namePlayer'], team=team, id_csv=row['idPlayer'])
             if player[1]:
                 data['created'].append({'name': player[0].name, 'team': player[0].team})
 
     data['createdCount'] = len(data['created'])
     data['totalPlayers'] = Player.objects.all().count()
-    return HttpResponse(json.dumps(data))
+    return HttpResponse(json.dumps({"message": "finished"}))
 
 
 def seedData(request):
