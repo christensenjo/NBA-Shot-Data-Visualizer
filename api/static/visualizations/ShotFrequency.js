@@ -53,7 +53,7 @@ export class ShotFrequency extends D3Chart {
             .enter()
             .append("rect")
             .attr("x", -100)
-            .attr("y", function(d,i){ return (height - 50) + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("y", function(d,i){ return (height-10) + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
             .attr("width", size)
             .attr("height", size)
             .style("fill", function(d){ return d["color"]})
@@ -64,7 +64,7 @@ export class ShotFrequency extends D3Chart {
             .enter()
             .append("text")
             .attr("x", -100 + size*1.2)
-            .attr("y", function(d,i){ return (height - 50) + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("y", function(d,i){ return (height-10) + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
             .style("fill", function(d){ return d["color"]})
             .text(function(d){ return d["title"]})
             .attr("text-anchor", "left")
@@ -120,7 +120,7 @@ export class ShotFrequency extends D3Chart {
         this.svg.selectAll(".total").data([{}])
             .join("path")
             .transition().duration(1000)
-            .attr("d", `${line(this.data)},${this.size.height},${this.size.height-1},1,${this.size.height-1}`)
+            .attr("d", `${line(this.data)},${this.size.width},${this.size.height-1},1,${this.size.height-1}`)
             .attr("class", "line total")
             .attr("pointer-events", "auto")
 
@@ -128,7 +128,7 @@ export class ShotFrequency extends D3Chart {
         this.svg.selectAll(".made").data([{}])
             .join("path")
             .transition().duration(1000)
-            .attr("d", `${made_line(this.data)},${this.size.height},${this.size.height-1},1,${this.size.height-1}`)
+            .attr("d", `${made_line(this.data)},${this.size.width},${this.size.height-1},1,${this.size.height-1}`)
             .attr("class", "line made")
             .attr("pointer-events", "auto")
 
