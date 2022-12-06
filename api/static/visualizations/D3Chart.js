@@ -28,12 +28,25 @@ export class D3Chart {
     // builds and sets base SVG. It appends it to the selector for the object, and sets the margin correctly
     // Honeslty, this was the main reason I made the object. I didn't want to copy and paste it everywhere
     buildSVG() {
-        let svg = d3.select(this.selector).append("svg")
-            .attr("width", this.size.width + this.margin.left + this.margin.right)
-            .attr("height", this.size.height + this.margin.top + this.margin.bottom)
-            .append("g")
+//        let svg = d3.select(this.selector).append("svg")
+//            .attr("width", this.size.width + this.margin.left + this.margin.right)
+//            .attr("height", this.size.height + this.margin.top + this.margin.bottom)
+//            .append("g")
+//            .attr("transform", `translate(${this.margin.left},${this.margin.top})`)
+//            .attr('preserveAspectRatio', "xMidYMid meet")
+        let wrapper = d3.select(this.selector).append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr('preserveAspectRatio', "xMidYMid meet")
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .attr("class", "svg-content")
+            .attr("viewbox", `0 0 ${this.size.width + this.margin.left + this.margin.right} ${this.size.height + this.margin.top + this.margin.bottom}`)
+
+        let svg = wrapper.append("g")
             .attr("transform", `translate(${this.margin.left},${this.margin.top})`)
+
         this.svg = svg
+        this.wrapper = wrapper
     }
     // Should be overwritten by instances. All axis building and setting should happen within this
     buildAxis() {

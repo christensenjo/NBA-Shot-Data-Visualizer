@@ -21,8 +21,8 @@
 <body>
 	<main>
 		<div class="container-fluid text-center">
-            <h1 id="title">NBA Shot Data Visualization</h1>
-            <div class="row">
+            <h1 id="title" style="height:5vh">NBA Shot Data Visualization</h1>
+            <div class="row" style="height:48vh">
                 <div class="col-4 border">
                     <h2>League Comparison</h2>
                     <div id="league-comp-bar-chart">
@@ -139,15 +139,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="height:46vh">
 
                 <div class="col-6 border">
                     <h2>Shots by Distance</h2>
-                    <div id="shotDistanceHistogram"></div>
+                    <div class="svg-container" id="shotDistanceHistogram"></div>
                 </div>
                 <div class="col-6 border">
                     <h2>Attempted Shots By Period</h2>
-                    <div id="shotFrequency">
+                    <div class="svg-container" id="shotFrequency">
                     </div>
                 </div>
             </div>
@@ -190,12 +190,12 @@
     let heatmap = new HeatMap("#court", "");
 
     let shotFrequency = new ShotFrequency("#shotFrequency", "")
-	shotFrequency.reSize(400, 400)
+	shotFrequency.reSize(200, 200)
 	shotFrequency.reMargin(15, 25, 60, 120)
 	shotFrequency.build()
 
     let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
-	shotDistance.reSize(400, 400)
+	shotDistance.reSize(200, 200)
 	shotDistance.reMargin(15, 25, 60, 120)
 	shotDistance.build()
 
@@ -239,6 +239,21 @@
     }
     .point3-label {
         display: none;
+    }
+
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%; /* aspect ratio */
+      vertical-align: top;
+      overflow: hidden;
+    }
+    .svg-content {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 
 </style>
