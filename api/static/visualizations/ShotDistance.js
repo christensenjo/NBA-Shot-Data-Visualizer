@@ -115,7 +115,7 @@ export class ShotDistance extends D3Chart {
                 tooltip.html(e.target.getAttribute('data-message'))
                 let rect = e.target.getBoundingClientRect()
                 let tooltipRect = tooltip.node().getBoundingClientRect()
-                tooltip.style("top", (rect.top-35)+"px").style("left",(rect.left-(tooltipRect.width/2)+(rect.width/2))+"px")
+                tooltip.style("top", (rect.top-75)+"px").style("left",(rect.left-(tooltipRect.width/2)+(rect.width/2))+"px")
             })
             .on("mouseleave", function(e) {
                 d3.select(this).style("fill", "#198754");

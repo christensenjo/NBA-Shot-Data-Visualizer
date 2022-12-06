@@ -143,11 +143,20 @@
 
                 <div class="col-6 border">
                     <h2>Shots by Distance</h2>
-                    <div id="shotDistanceHistogram"></div>
+                    <div id="shotDistanceHistogram">
+                        <svg version="1.0"
+                             xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 600 200"
+                             preserveAspectRatio="xMidYMid meet"></svg>
+                    </div>
                 </div>
                 <div class="col-6 border">
                     <h2>Attempted Shots By Period</h2>
                     <div id="shotFrequency">
+                        <svg version="1.0"
+                             xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 600 200"
+                             preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                 </div>
             </div>
@@ -190,12 +199,12 @@
     let heatmap = new HeatMap("#court", "");
 
     let shotFrequency = new ShotFrequency("#shotFrequency", "")
-	shotFrequency.reSize(400, 400)
+	shotFrequency.reSize(400, 150)
 	shotFrequency.reMargin(15, 25, 60, 120)
 	shotFrequency.build()
 
     let shotDistance = new ShotDistance("#shotDistanceHistogram", "")
-	shotDistance.reSize(400, 400)
+	shotDistance.reSize(400, 150)
 	shotDistance.reMargin(15, 25, 60, 120)
 	shotDistance.build()
 
@@ -239,6 +248,24 @@
     }
     .point3-label {
         display: none;
+    }
+
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%; /* aspect ratio */
+      vertical-align: top;
+      overflow: hidden;
+    }
+    .svg-content {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .html, body {
+        overflow: hidden;
     }
 
 </style>

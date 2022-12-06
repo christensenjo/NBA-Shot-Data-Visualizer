@@ -28,12 +28,17 @@ export class D3Chart {
     // builds and sets base SVG. It appends it to the selector for the object, and sets the margin correctly
     // Honeslty, this was the main reason I made the object. I didn't want to copy and paste it everywhere
     buildSVG() {
-        let svg = d3.select(this.selector).append("svg")
-            .attr("width", this.size.width + this.margin.left + this.margin.right)
-            .attr("height", this.size.height + this.margin.top + this.margin.bottom)
+        let svg = d3.select(`${this.selector} svg`)
+//        let svg = d3.select(this.selector).append("svg")
+////            .attr("width", this.size.width + this.margin.left + this.margin.right)
+////            .attr("height", this.size.height + this.margin.top + this.margin.bottom)
+//            .attr("viewbox", [-1, -1, this.size.width + this.margin.left + this.margin.right, this.size.height + this.margin.top + this.margin.bottom])
+//            .attr('preserveAspectRatio', "xMidYMid meet")
             .append("g")
             .attr("transform", `translate(${this.margin.left},${this.margin.top})`)
+
         this.svg = svg
+//        this.wrapper = wrapper
     }
     // Should be overwritten by instances. All axis building and setting should happen within this
     buildAxis() {
@@ -59,7 +64,6 @@ export class D3Chart {
         this.buildSVG()
 
         await this.fetchData()
-
 
         this.buildAxis()
         this.updateAxis()
