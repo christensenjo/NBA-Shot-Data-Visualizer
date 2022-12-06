@@ -46,7 +46,7 @@ export class ShotFrequency extends D3Chart {
             .attr("transform", "rotate(-90)")
             .text("Count of Shots");
 
-        let data = [{"title":"Made", "color":"#5bd75b"},{"title":"Missed", "color":"#9d9d9d"}]
+        let data = [{"title":"Made", "color":"#198754"},{"title":"Missed", "color":"#9d9d9d"}]
         var size = 20
         this.svg.selectAll("mydots")
             .data(data)

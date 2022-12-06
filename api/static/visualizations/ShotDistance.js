@@ -98,15 +98,14 @@ export class ShotDistance extends D3Chart {
 
         let tooltip = this.tooltip
 
-        this.svg.selectAll("rect").data(data)
+        this.svg.selectAll(".bar").data(data)
             .join("rect")
 //            .transition().duration(1000)
             .attr("x", 1)
             .attr("transform", function(d) { return "translate(" + xScale(d.x0) + "," + (yScale(d.length-2)) + ")"; })
             .attr("width", function(d) { return Math.max(xScale(d.x1) - xScale(d.x0),0); })
             .attr("height", function(d) { return Math.max(height - yScale(d.length-2), 0); })
-            .style("fill", "#198754")
-            .attr("class", ".bar")
+            .attr("class", "bar")
             .attr('data-message', function(d){
                 return `Shots: ${(d.length)-2} <br> Distance: ${d.x0}`
             })
