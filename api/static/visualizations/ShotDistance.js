@@ -136,7 +136,7 @@ export class ShotDistance extends D3Chart {
         this.svg.selectAll(".point3-label").data(d)
             .attr("y", function(d){return xScale(d.distance)})
             .attr("x",-25)
-            .attr("display","initial")
+            .style("display","initial")
             .attr("width", function(d) { return 1 })
             .attr("height", function(d) { return height })
 
