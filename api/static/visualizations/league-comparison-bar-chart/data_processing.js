@@ -37,11 +37,11 @@ function getPercentile(array, percentile) {
             return a - b
         }
     )
-    console.log('sorted', array)
+    // console.log('sorted', array)
     let index = percentile * (array.length - 1)
-    console.log(index)
+    // console.log(index)
     index = Math.round(index)
-    console.log(index)
+    // console.log(index)
     return array[index]
 }
 

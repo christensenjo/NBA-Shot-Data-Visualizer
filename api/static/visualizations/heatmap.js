@@ -10,8 +10,8 @@ class HeatMap {
         this.svg = d3.select(selector).append("g");
 
         // Legend Setup Members
-        this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff",
-            "#3e00ff"];
+        // this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff", "#3e00ff"];
+        this.colors = ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c']
         this.fillRange = [];
         this.legendWidth = (this.width / 5) * 1.5;
         this.legendHeight = 30;
@@ -33,8 +33,8 @@ class HeatMap {
         this.removeOldLegend();
         this.fill.domain([this.min, this.max]);
 
-        console.log("pane width is " + document.getElementById("heatmapPane").offsetWidth);
-        console.log("title width is " + document.getElementById("heatmapTitle").offsetWidth);
+        // console.log("pane width is " + document.getElementById("heatmapPane").offsetWidth);
+        // console.log("title width is " + document.getElementById("heatmapTitle").offsetWidth);
 
         let legendSVG = d3.select("#legendItem").append("svg")
             .attr("id", "legendSVG")
@@ -49,8 +49,8 @@ class HeatMap {
             LegendScale.push(diff * (i) + this.min);
         }
 
-        this.colors = ["#3e00ff", "#a700ff", "#ff00f1", "#ff5420",
-            "#ff0000"];
+        this.colors = ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c']
+        // this.colors = ["#3e00ff", "#a700ff", "#ff00f1", "#ff5420", "#ff0000"];
         this.axisScale.domain(LegendScale);
         let legendAxis = d3.axisBottom(this.axisScale).tickFormat(x=>  (x * 100).toFixed(1) + "%");
         let legend = legendSVG.selectAll(".legend")
@@ -58,8 +58,8 @@ class HeatMap {
             .enter().append("g")
             .attr("transform", "translate(" + 21 + ", " + 0 + ")");
 
-        console.log("legendWidth is " + this.legendWidth);
-        console.log("color legnth: " + this.colors.length);
+        // console.log("legendWidth is " + this.legendWidth);
+        // console.log("color legnth: " + this.colors.length);
 
         legend.append("rect")
             .attr("width", this.legendWidth/this.colors.length)
@@ -70,14 +70,14 @@ class HeatMap {
         legendSVG.append("g").attr("class", "axis")
             .attr("transform", "translate(" + (20) + ", " + (30) + ")")
             .call(legendAxis);
-        this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff",
-            "#3e00ff"];
+        this.colors = ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c']
+        // this.colors = ["#ff0000", "#ff5420", "#ff00f1", "#a700ff", "#3e00ff"];
     }
 
     updateChart(){
         this.fill.domain([this.min, this.max]);
-        console.log(this.fill);
-        console.log(this.fill(5));
+        // console.log(this.fill);
+        // console.log(this.fill(5));
         this.gridSquares = [].concat(...this.shotGrid);
 
         let self = this;
@@ -88,10 +88,11 @@ class HeatMap {
                     .attr("width", .10 * this.width)
                     .attr("height", .10 * this.height)
                     .style("fill", function(d, i){
-                        console.log("entering fill");
+                        // console.log("entering fill");
 
                         if(d['fg%'] === undefined){
-                            return "#3e00ff";
+                            return '#edf8e9'
+                            // return "#3e00ff";
                         }
                         return self.fill(d['fg%']);
                     })
@@ -102,11 +103,23 @@ class HeatMap {
                     })
                     .attr("x", function(d){
                         return (d['x']/10) * 700;
+                    })
+                    .on('mouseover', function(d) {
+                        d3.select(this).style('fill', 'red')
+                    })
+                    .on('mouseout', function(d) {
+                        d3.select(this).style("fill", function(d, i){
+                            if(d['fg%'] === undefined){
+                                return '#edf8e9'
+                                // return "#3e00ff";
+                            }
+                            return self.fill(d['fg%']);
+                        })
                     }),
                 update => update
                     .style("opacity", "50%")
                     .style("fill", function(d){
-                        console.log("Updating fill");
+                        // console.log("Updating fill");
                         if(d['fg%'] === undefined){
                             return "none";
                         }
@@ -126,8 +139,8 @@ class HeatMap {
                 }
             );
 
-        console.log("heatmap data fetched:");
-        console.log(this.data);
+        // console.log("heatmap data fetched:");
+        // console.log(this.data);
 
         // TODO: implement post data fetch to replace above get fetch
         // if(!this.dataPath){
@@ -210,7 +223,7 @@ class HeatMap {
         }else if(x <= 1 && x > 0.8){
             return 9;
         }else{
-            console.log(x);
+            // console.log(x);
         }
     }
 

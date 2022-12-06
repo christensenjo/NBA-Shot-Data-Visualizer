@@ -22,7 +22,6 @@ modifyHtmlIdForm = (id) => {
     return '#' + id
 }
 
-
 class LeagueCompBarChart {
     constructor(width, height, divElementName, yLabels=['Points', 'Rebounds', 'Salary', 'Height', 'Weight']) {
         // The data fed in should contain the percentiles (not sure how many).
@@ -50,6 +49,21 @@ class LeagueCompBarChart {
         this.createInitialPercentileTextElement()
         this.createInitialActualValueTextElement()
         this.updateTextOnMouseMovement()
+        this.makeDataRequest()
+    }
+
+    makeDataRequest = async () => {
+        // /players/getPlayerData/playerName
+        // let endpoint = 'http://' + window.location.host + '/players/getPlayerData/?playerName=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value
+        let endpoint = 'http://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
+        console.log('endpoint', endpoint)
+        await fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                this.data = data;
+                // console.log(this.data);
+            })
     }
 
     createInitialPercentileTextElement = () => {
