@@ -46,7 +46,7 @@ class HeatMap {
         let diff = (this.max - this.min)/this.colors.length;
         let LegendScale = [];
         for(let i = 0;i <= this.colors.length;i++){
-            LegendScale.push(diff * (i + 1) + this.min);
+            LegendScale.push(diff * (i) + this.min);
         }
 
         this.colors = ["#3e00ff", "#a700ff", "#ff00f1", "#ff5420",
