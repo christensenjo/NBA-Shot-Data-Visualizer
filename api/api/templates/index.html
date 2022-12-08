@@ -20,10 +20,143 @@
 
 <body>
 	<main>
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg-dark p-4 justify-content-center">
+                <div class="w-100">
+                    <div class="w-100 d-inline-flex mx-2">
+                        <div class="w-25">
+                            <h3 class="text-white">Points (PPG)</h3>
+                        </div>
+                        <div class="w-25 mx-1">
+                            <h3 class="text-white">Assists (APG)</h3>
+                        </div>
+                        <div class="w-25">
+                            <h3 class="text-white">Rebounds (RPG)</h3>
+                        </div>
+                    </div>
+                    <div class="w-100 d-inline-flex mb-2">
+                        <div class="w-25 m-2">
+                            <div class="mb-2">
+                                <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Min</div>
+                                </div>
+                                <input id="min-ppg" value="0" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                                </div>
+                            </div>
+                            <div class="mb-1">
+                                <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Max</div>
+                                </div>
+                                <input id="max-ppg" value="100" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-25 m-2">
+                            <div class="mb-2">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Min</div>
+                                    </div>
+                                    <input id="min-apg" value="0" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
+                                </div>
+                            </div>
+                            <div class="mb-1">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Max</div>
+                                    </div>
+                                    <input id="max-apg" value="100" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-25 m-2">
+                            <div class="mb-2">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">RPG</div>
+                                    </div>
+                                    <input id="min-rpg" value="0" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
+                                </div>
+                                
+                            </div>
+                            <div class="mb-1">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">RPG</div>
+                                    </div>
+                                    <input id="max-rpg" value="100" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-filter" class="btn btn-secondary w-25 m-2 h-auto">Filter</button>
+                    </div>
+                    <div>
+                        <form id="shot-chart2" class="">
+                            <div class="input-group">
+                                <div class="col-sm-3 px-2">
+                                    <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Player</div>
+                                    </div>
+                                    <datalist id="players"></datalist>
+                                    <input class="form-control form-control-sm" id="player" type="text" name="player" placeholder="Start typing or select..." list="players" value="Trae Young">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 px-2">
+                                    <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Start</div>
+                                    </div>
+                                    <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 px-2">
+                                    <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">End</div>
+                                    </div>
+                                    <input class="form-control form-control-sm" type="date" placeholder="End Date" id="end_date" name="end_date" value="2022-01-01">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 px-1 ">
+                                    <script>
+                                        function setPlayer() {
+                                            let playerSelect = document.getElementById('player').value;
+                                            let startDate = document.getElementById('start_date').value.split('-');
+                                            startDate = startDate[1] + "/" + startDate[2] + "/" + startDate[0];
+                                            let endDate = document.getElementById('end_date').value.split('-');
+                                            endDate = endDate[1] + "/" + endDate[2] + "/" + endDate[0];
+                                            let player = document.getElementById('currentPlayer');
+                                            player.innerHTML = playerSelect + " " + startDate + " - " + endDate;
+                                        }
+                                    </script>
+                                    <button type="submit" onclick="setPlayer()" class="btn btn-success w-100">Visualize</button>
+                                </div>
+                            </div> 
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid justify-content-start">
+                <div>
+                    <button class="navbar-toggler float-start" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="mx-2 mt-1">
+                    <h2 id="currentPlayer" class="text-white">Select a Player</h2>
+                </div>
+            </div>
+        </nav>
 		<div class="container-fluid text-center">
             <h1 id="title">NBA Shot Data Visualization</h1>
             <div class="row">
-                <div class="col-4 border">
+                <div class="col-6 border">
                     <h2>League Comparison</h2>
                     <div id="league-comp-bar-chart">
                         <svg version="1.0"
@@ -32,75 +165,8 @@
                              preserveAspectRatio="xMidYMid meet"></svg>
                     </div>
                 </div>
-                <div class="col-4 border">
-                <form id="shot-chart2">
-                        <label for="player">Player:</label>
-                        <input class="form-control form-control-lg" id="player" type="text" name="player" placeholder="Player Name" list="players" value="Trae Young" style="position: relative; margin: 0 auto; display: block">
-                        <datalist id="players"></datalist>
-
-                        <label for="start">Start Date:</label>
-                        <input class="form-control form-control-sm" type="date" placeholder="Start Date" id="start_date" name="start_date" value="2019-01-01">
-                        <label for="end">End Date:</label>
-                        <input class="form-control form-control-sm" type="date" placeholder="End Date" id="end_date" name="end_date" value="2022-01-01">
-                        <button type="submit" class="btn btn-success w-100 my-2">Visualize</button>
-                        <label>Minimum</label>
-                        <div class="input-group mb-3">
-                            <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">PPG</div>
-                                  </div>
-                                  <input id="min-ppg" value="0" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
-                                </div>
-                              </div>
-                              <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">APG</div>
-                                  </div>
-                                  <input id="min-apg" value="0" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
-                                </div>
-                              </div>
-                              <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">RPG</div>
-                                  </div>
-                                  <input id="min-rpg" value="0" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
-                                </div>
-                              </div>
-                        </div>
-                        <label>Maximum</label>
-                        <div class="input-group mb-3">
-                            <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">PPG</div>
-                                  </div>
-                                  <input id="max-ppg" value="100" type="number" class="form-control form-control-sm" placeholder="PPG" aria-label="Points-Per-Game">
-                                </div>
-                              </div>
-                              <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">APG</div>
-                                  </div>
-                                  <input id="max-apg" value="100" type="number" class="form-control form-control-sm" placeholder="APG" aria-label="Assists-Per-Game">
-                                </div>
-                              </div>
-                              <div class="col-sm-4 my-1">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">RPG</div>
-                                  </div>
-                                  <input id="max-rpg" value="100" type="number" class="form-control fomrm-control-sm" placeholder="RPG" aria-label="Rebounds-Per-Game">
-                                </div>
-                              </div>
-                        </div>
-                    </form>
-                    <button id="btn-filter" class="btn btn-secondary w-100 mb-2">Filter</button>
-                </div>
-                <div class="col-4 border" id="heatmapPane">
+                
+                <div class="col-6 border" id="heatmapPane">
                     <ul class="list-inline" id="titleAndLegend" style="text-align: left; padding-left: 5%;">
                         <li class="list-inline-item">
                             <h2 id="heatmapTitle" style="margin-right: 0;">FG% Heatmap</h2>
