@@ -1,0 +1,2 @@
+docker build --tag nba-shot-visualizer .
+docker run --publish 8000:8000 nba-shot-visualizer
