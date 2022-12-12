@@ -179,6 +179,7 @@ class Shot(models.Model):
 
         data_path = DATA_PATH
         files = os.listdir(data_path)
+        print([file for file in files if file.endswith('.csv') and 'shotData' in file])
         for file in files:
             if file.endswith('.csv') and 'shotData' in file:
                 if year:
