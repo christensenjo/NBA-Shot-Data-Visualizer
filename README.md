@@ -14,6 +14,7 @@ Since this is a Django project, several steps are required to run the server loc
 In a terminal after changing to the `/api/` directory, complete the following steps:
 
     pip install djangorestframework # This may be moved to a requirements.txt file later
+    pip install tqdm
     python manage.py makemigrations
     python manage.py migrate
     python manage.py runserver
