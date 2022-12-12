@@ -7,6 +7,10 @@ from django.db import models
 from players.models import Player, Team
 import pandas as pd
 
+from tqdm import tqdm
+
+from api.settings import DATA_PATH
+
 
 class ShotEvent(models.Model):
     name = models.CharField(max_length=100)
@@ -108,12 +112,11 @@ class Shot(models.Model):
         def create_shot_from_df(df):
             ctr = 0
             shots = []
-            for index, row in df.iterrows():
+            for index, row in tqdm(df.iterrows(), total=df.shape[0]):
 
                 if ctr % batch_size == 0:
                     Shot.objects.bulk_create(shots, ignore_conflicts=True)
                     shots = []
-                    print(ctr)
                 ctr += 1
 
                 # zone = optim.get_row('zone', row['typeShot'], Zone.objects.get_or_create, {'description':row['zoneBasic'], 'range':row['zoneRange'], 'zone_type'zone_type_id})
@@ -174,13 +177,14 @@ class Shot(models.Model):
                 shots.append(shot)
             Shot.objects.bulk_create(shots, ignore_conflicts=True) #create the remainder
 
-        data_path = "../data"
+        data_path = DATA_PATH
         files = os.listdir(data_path)
         for file in files:
-            if file.endswith('.csv'):
+            if file.endswith('.csv') and 'shotData' in file:
                 if year:
                     if not str(year) in file:
                         continue
+                print(f'Loading Year {file}')
                 create_shot_from_df(pd.read_csv(f'{data_path}/{file}'))
 
 

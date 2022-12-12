@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+APP_DIR = Path(__file__).resolve().parent.parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -127,8 +128,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+DATA_PATH = os.path.join(APP_DIR, 'data')
+print(DATA_PATH)
 if DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js", True)

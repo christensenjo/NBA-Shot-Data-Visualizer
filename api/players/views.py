@@ -6,6 +6,8 @@ import pandas as pd
 from .models import Player, Team
 
 # Create your views here.
+from api.settings import DATA_PATH
+
 
 def get(request):
     players = Player.objects.all()
@@ -33,12 +35,12 @@ def getPlayerData(request, player):
         
 
 def seedPlayers(request):
-    files = os.listdir('../data')
+    files = os.listdir(DATA_PATH)
     data = {'created': []}
     dfs = []
     for file in files:
         if file.endswith('shotData.csv'):
-            df = pd.read_csv('../data/' + file)
+            df = pd.read_csv(DATA_PATH + file)
             players = df[["namePlayer","nameTeam","idPlayer"]].drop_duplicates()
             dfs.append(players)
     players = pd.concat(dfs)
@@ -58,11 +60,11 @@ def seedPlayers(request):
 
 
 def seedData(request):
-    files = os.listdir('../data')
+    files = os.listdir(DATA_PATH)
     data = {'created': []}
     for file in files:
         if file.endswith('salaries.csv'):
-            df = pd.read_csv('../data/' + file)
+            df = pd.read_csv(DATA_PATH + file)
             for index, row in df.iterrows():
                 player = Player.objects.filter(name=row['Player'])
                 if player:
@@ -72,7 +74,7 @@ def seedData(request):
                         data['created'].append({'name': p.name, 'salary': p.salary})
 
         if file.endswith('stats.csv'):
-            df = pd.read_csv('../data/' + file)
+            df = pd.read_csv(DATA_PATH + file)
             for index, row in df.iterrows():
                 player = Player.objects.filter(name=row['Player'])
                 if player:
