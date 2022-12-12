@@ -11,6 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         year = kwargs.get('year', None) or None
         Shot = apps.get_model('shots', 'Shot')
-        Shot.load_league_data()
+
         Shot.load_data(year)
+        Shot.load_league_data()
 
