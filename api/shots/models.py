@@ -92,6 +92,36 @@ class Shot(models.Model):
            )
 
     @classmethod
+    def load_league_data(cls):
+        files = os.listdir(DATA_PATH)
+        data = {'created': []}
+        for file in files:
+            if file.endswith('salaries.csv'):
+                df = pd.read_csv(os.path.join(DATA_PATH, file))
+                for index, row in df.iterrows():
+                    player = Player.objects.filter(name=row['Player'])
+                    if player:
+                        for p in player:
+                            p.salary = float(row['2022-23'])
+                            p.save()
+                            data['created'].append({'name': p.name, 'salary': p.salary})
+
+            if file.endswith('stats.csv'):
+                df = pd.read_csv(os.path.join(DATA_PATH, file))
+                for index, row in df.iterrows():
+                    player = Player.objects.filter(name=row['Player'])
+                    if player:
+                        for p in player:
+                            p.ppg = row['PTS']
+                            p.rpg = row['TRB']
+                            p.apg = row['AST']
+                            p.topg = row['TOV']
+                            p.save()
+                            data['created'].append(
+                                {'name': p.name, 'ppg': p.ppg, 'rpg': p.rpg, 'apg': p.apg, 'topg': p.topg})
+        return data
+
+    @classmethod
     def load_data(cls, year=None):
         batch_size = 1000
 

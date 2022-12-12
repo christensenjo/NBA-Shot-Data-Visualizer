@@ -8,6 +8,8 @@ from .models import Player, Team
 # Create your views here.
 from api.settings import DATA_PATH
 
+from shots.models import Shot
+
 
 def get(request):
     players = Player.objects.all()
@@ -34,7 +36,7 @@ def getPlayerData(request, player):
     return HttpResponse(json.dumps({'playerData': playerData, 'leagueData': leagueData}))
         
 
-def seedPlayers(request):
+def seedPlayers(request=None):
     files = os.listdir(DATA_PATH)
     data = {'created': []}
     dfs = []
@@ -60,31 +62,5 @@ def seedPlayers(request):
 
 
 def seedData(request):
-    files = os.listdir(DATA_PATH)
-    data = {'created': []}
-    for file in files:
-        if file.endswith('salaries.csv'):
-            df = pd.read_csv(DATA_PATH + file)
-            for index, row in df.iterrows():
-                player = Player.objects.filter(name=row['Player'])
-                if player:
-                    for p in player:
-                        p.salary = float(row['2022-23'])
-                        p.save()
-                        data['created'].append({'name': p.name, 'salary': p.salary})
-
-        if file.endswith('stats.csv'):
-            df = pd.read_csv(DATA_PATH + file)
-            for index, row in df.iterrows():
-                player = Player.objects.filter(name=row['Player'])
-                if player:
-                    for p in player:
-                        p.ppg = row['PTS']
-                        p.rpg = row['TRB']
-                        p.apg = row['AST']
-                        p.topg = row['TOV']
-                        p.save()
-                        data['created'].append({'name': p.name, 'ppg': p.ppg, 'rpg': p.rpg, 'apg': p.apg, 'topg': p.topg})
-
-    data['createdCount'] = len(data['created'])
+    data = Shot.load_league_data()
     return HttpResponse(json.dumps(data))
