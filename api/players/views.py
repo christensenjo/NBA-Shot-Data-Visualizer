@@ -42,7 +42,7 @@ def seedPlayers(request=None):
     dfs = []
     for file in files:
         if file.endswith('shotData.csv'):
-            df = pd.read_csv(DATA_PATH + file)
+            df = pd.read_csv(os.path.join(DATA_PATH, file))
             players = df[["namePlayer","nameTeam","idPlayer"]].drop_duplicates()
             dfs.append(players)
     players = pd.concat(dfs)
