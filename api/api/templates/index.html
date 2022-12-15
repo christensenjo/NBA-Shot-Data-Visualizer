@@ -311,7 +311,7 @@
 	});
 
     function updatePlayers(minPpg, maxPpg, minApg, maxApg, minRpg, maxRpg) {
-        let players = fetch('http://' + window.location.host + '/players/get')
+        let players = fetch('https://' + window.location.host + '/players/get')
             .then(response => response.json())
             .then(data => {
                 let playerList = document.getElementById('players')

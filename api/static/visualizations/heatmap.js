@@ -141,7 +141,7 @@ class HeatMap {
     }
 
     async fetchData(){
-        await fetch('http://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
+        await fetch('https://' + window.location.host + '/shots/get/?player=' + document.getElementById('player').value + '&start_date=' + document.getElementById('start_date').value + '&end_date=' + document.getElementById('end_date').value)
             .then(response => response.json())
             .then(data => {
                     this.data = data;

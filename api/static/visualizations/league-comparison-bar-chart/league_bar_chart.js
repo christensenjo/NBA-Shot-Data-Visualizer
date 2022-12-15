@@ -113,7 +113,7 @@ class LeagueCompBarChart {
 
     // This function effectively calls the update function with received data.
     makeApiRequest = async () => {
-        let endpoint = 'http://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
+        let endpoint = 'https://' + window.location.host + '/players/getPlayerData/' + document.getElementById('player').value
         console.log('endpoint', endpoint)
         await fetch(endpoint)
             .then(response => response.json())
