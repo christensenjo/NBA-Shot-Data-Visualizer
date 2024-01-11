@@ -1,5 +1,7 @@
 # NBA-Shot-Data-Visualizer
 
+USU CS 5820 Data Visualization -- Group Final Project -- Joel Christensen, Hagen Larsen, Marshal Taylor, Sam Johnson
+
 ### Team Members
 
 [Joel Christensen](https://github.com/christensenjo), [Sam Johnson](https://github.com/samjohnson1357), [Hagen Larsen](https://github.com/hagen-larsen-hl), [Marshal Taylor](https://github.com/mpt777)
